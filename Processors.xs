@@ -1,5 +1,5 @@
 #/* -*- Mode: C -*- */
-#/* $Id: Processors.xs,v 1.14 2004/03/04 15:49:04 wsnyder Exp $ */
+#/* $Id: Processors.xs,v 1.15 2004/04/05 14:38:05 wsnyder Exp $ */
 #/* Author: Wilson Snyder <wsnyder@wsnyder.org> */
 #/* IRIX & FreeBSD port by: Daniel Gustafson <daniel@hobbit.se> */
 #/*##################################################################### */
@@ -236,6 +236,16 @@ int logical_per_physical_cpu() {
     if (strstr (flags, " ht ")) {
 	/* HACK: Current linux under hyperthreading always makes 2 logical CPUs per physical CPU */
 	logical_per = 2;
+    }
+#endif
+#ifdef __FreeBSD__
+    int hlt_htt_cpu = 0;
+    if (sysctlbyname("machdep.hlt_logical_cpus",
+		     &hlt_htt_cpu, sizeof(hlt_htt_cpu), NULL, NULL) == 0) {
+	if (hlt_htt_cpu == 0) {
+	    /* HACK: Current linux under hyperthreading always makes 2 logical CPUs per physical CPU */
+	    logical_per = 2;
+	}
     }
 #endif
 
