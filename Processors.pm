@@ -1,5 +1,5 @@
 # Unix::Processors - Verilog PLI
-# $Id: Processors.pm,v 1.16 2004/01/27 19:07:41 wsnyder Exp $
+# $Id: Processors.pm,v 1.18 2004/03/04 15:51:50 wsnyder Exp $
 # Author: Wilson Snyder <wsnyder@wsnyder.org>
 ######################################################################
 #
@@ -24,6 +24,9 @@ Unix::Processors - Interface to processor (CPU) information
 
   my $procs = new Unix::Processors;
   print "There are ", $procs->max_online, " CPUs at ", $procs->max_clock, "\n";
+  if ($procs->max_online != $procs->max_physical) {
+      print "Hyperthreading between ",$procs->max_physical," physical CPUs.\n";
+  }
   (my $FORMAT =   "%2s  %-8s     %4s    \n") =~ s/\s\s+/ /g;
   printf($FORMAT, "#", "STATE", "CLOCK",  "TYPE", ); 
   foreach my $proc (@{$procs->processors}) {
@@ -40,7 +43,13 @@ the operating system in a OS independent manner.
 
 =item max_online
 
-Return number of processors currently online.
+Return number of processors currently online.  On hyperthreaded Linux
+systems, this indicates the maximum number of simultaneous threads that may
+execute; see max_physical for the real physical CPU count.
+
+=item max_physical
+
+Return number of physical processors currently online.
 
 =item max_clock
 
@@ -70,7 +79,7 @@ Wilson Snyder <wsnyder@wsnyder.org>
 package Unix::Processors;
 use Unix::Processors::Info;
 
-$VERSION = '2.015';
+$VERSION = '2.020';
 
 require DynaLoader;
 @ISA = qw(DynaLoader);

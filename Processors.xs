@@ -1,5 +1,5 @@
 #/* -*- Mode: C -*- */
-#/* $Id: Processors.xs,v 1.13 2004/01/27 19:07:41 wsnyder Exp $ */
+#/* $Id: Processors.xs,v 1.14 2004/03/04 15:49:04 wsnyder Exp $ */
 #/* Author: Wilson Snyder <wsnyder@wsnyder.org> */
 #/* IRIX & FreeBSD port by: Daniel Gustafson <daniel@hobbit.se> */
 #/*##################################################################### */
@@ -227,6 +227,21 @@ invent_cpuinfo_t irix_get_cpuinf(int cpuid) {
 }
 #endif
 
+int logical_per_physical_cpu() {
+    int logical_per = 1;
+
+#ifdef __linux__
+    char* flags = proc_cpuinfo_field ("flags");
+    /* flags: ... ht ... indicates hyperthreading enabled on a cpu */
+    if (strstr (flags, " ht ")) {
+	/* HACK: Current linux under hyperthreading always makes 2 logical CPUs per physical CPU */
+	logical_per = 2;
+    }
+#endif
+
+    return logical_per;
+}
+
 MODULE = Unix::Processors  PACKAGE = Unix::Processors
 
 #/**********************************************************************/
@@ -241,6 +256,23 @@ SV *self;
 CODE:
 {
     RETVAL = proc_ncpus();
+}
+OUTPUT: RETVAL
+
+#/**********************************************************************/
+#/* class->max_physical() */
+#/* Self is a argument, but we don't need it */
+
+long
+max_physical(self)
+SV *self;
+CODE:
+{
+    int cpus = proc_ncpus();
+    if (cpus > 1) {
+	cpus /= logical_per_physical_cpu();
+    }
+    RETVAL = cpus;
 }
 OUTPUT: RETVAL
 

@@ -20,6 +20,9 @@ Description
 
        my $procs = new Unix::Processors;
        print $procs->max_online, " CPUs at ", $procs->max_clock, " MHz\n";
+       if ($procs->max_online != $procs->max_physical) {
+           print "Hyperthreading between ",$procs->max_physical," physical CPUs.\n";
+       }
        (my $FORMAT =   "%2s  %-8s     %4s    \n") =~ s/\s\s+/ /g;
        printf($FORMAT, "#", "STATE", "CLOCK",  "TYPE", );
        foreach my $proc (@{$procs->processors}) {

@@ -4,7 +4,7 @@
 @settitle Perl Unix::Processors Installation
 @c %**end of header
 
-@c $Revision: 1.12 $$Date: 2004/01/27 19:07:41 $$Author: wsnyder $
+@c $Revision: 1.14 $$Date: 2004/03/04 15:52:18 $$Author: wsnyder $
 @c DESCRIPTION: TexInfo: DOCUMENT source run through texinfo to produce README file
 @c Use 'make README' to produce the output file
 
@@ -39,6 +39,9 @@ This package provides access to per-processor information from Perl.
 @example
   my $procs = new Unix::Processors;
   print $procs->max_online, " CPUs at ", $procs->max_clock, " MHz\n";
+  if ($procs->max_online != $procs->max_physical) @{
+      print "Hyperthreading between ",$procs->max_physical," physical CPUs.\n";
+  @}
   (my $FORMAT =   "%2s  %-8s     %4s    \n") =~ s/\s\s+/ /g;
   printf($FORMAT, "#", "STATE", "CLOCK",  "TYPE", ); 
   foreach my $proc (@@@{$procs->processors@}) @{
