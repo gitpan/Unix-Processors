@@ -6,6 +6,11 @@ The contributors that suggested a given feature is shown in [].
 	
 This uses outline mode in Emacs.  See C-h m [M-x describe-mode].
 
+* Changes in Unix::Processors 2.012 05/05/2003
+
+***	Add support for SGI Irix and some FreeBSD. [by Daniel Gustafson]
+
+
 * Changes in Unix::Processors 2.011 01/02/2003
 
 ***	Fix type and frequency for AIX and HPUX. [by Reid Madsen]
@@ -38,7 +43,7 @@ This uses outline mode in Emacs.  See C-h m [M-x describe-mode].
 **	First CPAN Release
 
 ----------------------------------------------------------------------
-$Id: NEWS,v 1.4 2003/01/02 14:53:55 wsnyder Exp $
+$Id: NEWS,v 1.5 2003/05/05 13:29:23 wsnyder Exp $
 ----------------------------------------------------------------------
 Copyright information:
 
