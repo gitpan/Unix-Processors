@@ -1,5 +1,5 @@
 #/* -*- Mode: C -*- */
-#/* $Id: Processors.xs,v 1.4 1999/12/02 14:31:44 wsnyder Exp $ */
+#/* $Id: Processors.xs,v 1.5 1999/12/08 22:42:42 wsnyder Exp $ */
 #/* Author: Wilson Snyder <wsnyder@world.std.com> */
 #/*##################################################################### */
 #/* */
@@ -35,6 +35,8 @@ typedef int CpuNumFromRef_t;
 
 #ifdef __linux__
 char *proc_cpuinfo_field (const char *field)
+    /* Return string from a field of /proc/cpuinfo, NULL if not found */
+    /* Comparison is case insensitive */
 {
     FILE *fp;
     static char line[1000];
@@ -43,7 +45,7 @@ char *proc_cpuinfo_field (const char *field)
     if (NULL!=(fp = fopen ("/proc/cpuinfo", "r"))) {
 	while (!feof(fp) && result==NULL) {
 	    fgets (line, 990, fp);
-	    if (0==strncmp (field, line, len)) {
+	    if (0==strncasecmp (field, line, len)) {
 		char *loc = strchr (line, ':');
 		if (loc) {
 		    result = loc+2;
@@ -58,6 +60,7 @@ char *proc_cpuinfo_field (const char *field)
 }
 
 int proc_cpuinfo_clock (void)
+    /* Return clock frequency */
 {
     char *value;
     value = proc_cpuinfo_field ("cpu MHz");
@@ -71,6 +74,21 @@ int proc_cpuinfo_clock (void)
 
 #endif
 
+int proc_ncpus (void)
+    /* Return number of cpus */
+{
+    int ncpu = sysconf(_SC_NPROCESSORS_ONLN);
+#ifdef __linux__
+    if (ncpu < 1) {
+	/* SPARC Linux has a bug where SC_NPROCESSORS is set to 0. */
+	char *value;
+	value = proc_cpuinfo_field("ncpus active");
+	if (value) ncpu = atoi(value);
+    }
+#endif
+    if (ncpu<1) ncpu=1;	/* We're running this program, after all :-) */
+    return (ncpu);
+}
 
 MODULE = Unix::Processors  PACKAGE = Unix::Processors
 
@@ -85,7 +103,7 @@ max_online(self)
 SV *self;
 CODE:
 {
-    RETVAL = sysconf(_SC_NPROCESSORS_ONLN);
+    RETVAL = proc_ncpus();
 }
 OUTPUT: RETVAL
 
@@ -222,7 +240,7 @@ CODE:
     }
 #endif
 #ifdef __linux__
-    int ncpu = sysconf(_SC_NPROCESSORS_ONLN);
+    int ncpu = proc_ncpus();
     if (cpu < ncpu) {
 	value = proc_cpuinfo_field ("model name");
 	if (!value) value = proc_cpuinfo_field ("machine");
