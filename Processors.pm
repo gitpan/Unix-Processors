@@ -1,22 +1,17 @@
 # Unix::Processors - Verilog PLI
-# $Id: Processors.pm,v 1.13 2003/05/12 13:16:27 wsnyder Exp $
+# $Id: Processors.pm,v 1.16 2004/01/27 19:07:41 wsnyder Exp $
 # Author: Wilson Snyder <wsnyder@wsnyder.org>
 ######################################################################
 #
-# This program is Copyright 2000 by Wilson Snyder.
-#
-# This program is free software; you can redistribute it and/or modify
-# it under the terms of either the GNU General Public License or the
-# Perl Artistic License.
+# Copyright 1999-2004 by Wilson Snyder.  This program is free software;
+# you can redistribute it and/or modify it under the terms of either the GNU
+# General Public License or the Perl Artistic License.
 # 
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 # 
-# If you do not have a copy of the GNU General Public License write to
-# the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, 
-# MA 02139, USA.
 ######################################################################
 
 =head1 NAME
@@ -53,7 +48,7 @@ Return the maximum clock speed across all online processors. Not all OSes suppor
   
 =item processors
 
-Return a array or processor references.  See the Unix::Processors::Info
+Return an array of processor references.  See the Unix::Processors::Info
 manual page.  Not all OSes support this call.
 
 =back
@@ -75,7 +70,7 @@ Wilson Snyder <wsnyder@wsnyder.org>
 package Unix::Processors;
 use Unix::Processors::Info;
 
-$VERSION = '2.014';
+$VERSION = '2.015';
 
 require DynaLoader;
 @ISA = qw(DynaLoader);

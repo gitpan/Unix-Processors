@@ -1,5 +1,9 @@
-# $Id: Makefile.PL,v 1.10 2003/01/02 14:53:55 wsnyder Exp $
+# $Id: Makefile.PL,v 1.12 2004/01/27 19:07:41 wsnyder Exp $
 # DESCRIPTION: Perl ExtUtils: Type 'perl Makefile.PL' to create a Makefile for this package
+#
+# Copyright 1998-2004 by Wilson Snyder.  This program is free software;
+# you can redistribute it and/or modify it under the terms of either the GNU
+# General Public License or the Perl Artistic License.
 
 use ExtUtils::MakeMaker;
 use Carp;
@@ -7,7 +11,7 @@ use Carp;
 sub MY::postamble {
 "
 README: readme.texi
-	-rm \$@
+	-rm -f \$@
 	makeinfo \$< --output \$@ --no-headers --no-validate
 
 ## Maintainer use:

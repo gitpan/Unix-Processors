@@ -1,23 +1,18 @@
 #/* -*- Mode: C -*- */
-#/* $Id: Processors.xs,v 1.11 2003/05/12 13:16:27 wsnyder Exp $ */
+#/* $Id: Processors.xs,v 1.13 2004/01/27 19:07:41 wsnyder Exp $ */
 #/* Author: Wilson Snyder <wsnyder@wsnyder.org> */
 #/* IRIX & FreeBSD port by: Daniel Gustafson <daniel@hobbit.se> */
 #/*##################################################################### */
 #/* */
-#/* This program is Copyright 2002 by Wilson Snyder. */
-#/* This program is free software; you can redistribute it and/or */
-#/* modify it under the terms of the GNU General Public License */
-#/* as published by the Free Software Foundation; either version 2 */
-#/* of the License, or (at your option) any later version. */
+#/* Copyright 1999-2004 by Wilson Snyder.  This program is free software; */
+#/* you can redistribute it and/or modify it under the terms of either the GNU */
+#/* General Public License or the Perl Artistic License. */
 #/*  */
 #/* This program is distributed in the hope that it will be useful, */
 #/* but WITHOUT ANY WARRANTY; without even the implied warranty of */
 #/* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the */
 #/* GNU General Public License for more details. */
 #/*  */
-#/* If you do not have a copy of the GNU General Public License write to */
-#/* the Free Software Foundation, Inc., 675 Mass Ave, Cambridge,  */
-#/* MA 02139, USA. */
 #/*##################################################################### */
 
 #include "EXTERN.h"
