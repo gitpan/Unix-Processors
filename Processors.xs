@@ -1,5 +1,5 @@
 #/* -*- Mode: C -*- */
-#/* $Id: Processors.xs,v 1.10 2003/05/05 13:29:23 wsnyder Exp $ */
+#/* $Id: Processors.xs,v 1.11 2003/05/12 13:16:27 wsnyder Exp $ */
 #/* Author: Wilson Snyder <wsnyder@wsnyder.org> */
 #/* IRIX & FreeBSD port by: Daniel Gustafson <daniel@hobbit.se> */
 #/*##################################################################### */
@@ -293,7 +293,8 @@ CODE:
     }
 #endif
 #ifdef IRIX
-    if (proc_ncpus() == 1) {
+    int num_cpus = proc_ncpus();
+    if ((num_cpus > 0) && (num_cpus < 3)) {
 	inventory_t *sys_invent;
 	if (setinvent() != -1) {
 	    for (sys_invent = getinvent(); (sys_invent); sys_invent = getinvent()) {
@@ -388,7 +389,8 @@ CODE:
     }
 #endif
 #ifdef IRIX
-    if (proc_ncpus() == 1) {
+    int num_cpus = proc_ncpus();
+    if ((num_cpus > 0) && (num_cpus < 3)) {
 	inventory_t *sys_invent;
 	if (setinvent() != -1) {
 	    while ((sys_invent = getinvent()) != NULL) {
@@ -556,7 +558,8 @@ CODE:
 #ifdef IRIX
     if (cpu < proc_ncpus()) {
 	int cpu_data = 0;
-	if (proc_ncpus() == 1) {
+	int num_cpus = proc_ncpus();
+	if ((num_cpus > 0) && (num_cpus < 3)) {
 	    inventory_t *sys_invent;
 	    if (setinvent() != -1) {
 		while ((sys_invent = getinvent()) != NULL) {
@@ -583,10 +586,12 @@ CODE:
 		strcat(value, " MIPS R3000A");
 	    else if ((cpu_data >> C0_IMPSHIFT) == C0_IMP_R3000)
 		strcat(value, " MIPS R3000");
-	    else if ((cpu_data >> C0_IMPSHIFT) == C0_IMP_R4000)
-		strcat(value, " MIPS R4000");
-	    else if ((cpu_data >> C0_IMPSHIFT) == C0_IMP_R4400)
-		strcat(value, " MIPS R4400");
+	    else if ((cpu_data >> C0_IMPSHIFT) == C0_IMP_R4000) {
+		if (((cpu_data&C0_MAJREVMASK)>>C0_MAJREVSHIFT) >= C0_MAJREVMIN_R4400)
+		    strcat(value, " MIPS R4400");
+		else
+		    strcat(value, " MIPS R4000");
+	    }
 	    else if ((cpu_data >> C0_IMPSHIFT) == C0_IMP_R4650)
 		strcat(value, " MIPS R4650");
 	    else if ((cpu_data >> C0_IMPSHIFT) == C0_IMP_R4700)

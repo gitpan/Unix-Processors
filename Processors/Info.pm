@@ -1,5 +1,5 @@
 # Unix::Processor - Verilog PLI
-# $Id: Info.pm,v 1.12 2003/05/05 13:32:19 wsnyder Exp $
+# $Id: Info.pm,v 1.13 2003/05/12 13:16:27 wsnyder Exp $
 # Author: Wilson Snyder <wsnyder@wsnyder.org>
 ######################################################################
 #
@@ -34,22 +34,26 @@ Unix::Processors::Info - Interface to processor (CPU) information
 
 =head1 DESCRIPTION
 
-  This package provides access to per-processor (CPU) information from
+This package provides access to per-processor (CPU) information from
 the operating system in a OS independent manner.
 
 =over 4
 
 =item id
-  Return the cpu number of this processor.
+
+Return the cpu number of this processor.
 
 =item clock
-  Return the clock frequency in MHz.
+
+Return the clock frequency in MHz.
   
 =item state
-  Return the cpu state as "online", "offline", or "poweroff".
+
+Return the cpu state as "online", "offline", or "poweroff".
 
 =item type
-  Return the cpu type.
+
+Return the cpu type.
 
 =back
 
@@ -78,7 +82,7 @@ use vars qw($VERSION);
 ######################################################################
 #### Configuration Section
 
-$VERSION = '2.013';
+$VERSION = '2.014';
 
 ######################################################################
 #### Code

@@ -1,5 +1,5 @@
 # Unix::Processors - Verilog PLI
-# $Id: Processors.pm,v 1.12 2003/05/05 13:32:19 wsnyder Exp $
+# $Id: Processors.pm,v 1.13 2003/05/12 13:16:27 wsnyder Exp $
 # Author: Wilson Snyder <wsnyder@wsnyder.org>
 ######################################################################
 #
@@ -37,21 +37,24 @@ Unix::Processors - Interface to processor (CPU) information
 
 =head1 DESCRIPTION
 
-  This package provides accessors to per-processor (CPU) information.
+This package provides accessors to per-processor (CPU) information.
 The object is obtained with the Unix::Processors::processors call.
 the operating system in a OS independent manner.
 
 =over 4
 
 =item max_online
-  Return number of processors currently online.
+
+Return number of processors currently online.
 
 =item max_clock
-  Return the maximum clock speed across all online processors.
+
+Return the maximum clock speed across all online processors. Not all OSes support this call.
   
 =item processors
-  Return a array or processor references.  See the Unix::Processors::Info
-  manual page.  Not all OSes support this call.
+
+Return a array or processor references.  See the Unix::Processors::Info
+manual page.  Not all OSes support this call.
 
 =back
 
@@ -72,7 +75,7 @@ Wilson Snyder <wsnyder@wsnyder.org>
 package Unix::Processors;
 use Unix::Processors::Info;
 
-$VERSION = '2.013';
+$VERSION = '2.014';
 
 require DynaLoader;
 @ISA = qw(DynaLoader);
