@@ -1,5 +1,5 @@
 # Unix::Processor - Verilog PLI
-# $Id: Info.pm,v 1.17 2004/04/05 14:38:05 wsnyder Exp $
+# $Id: Info.pm,v 1.20 2004/09/13 14:03:41 ws150726 Exp $
 # Author: Wilson Snyder <wsnyder@wsnyder.org>
 ######################################################################
 #
@@ -52,17 +52,21 @@ Return the cpu type.
 
 =back
 
-=head1 SEE ALSO
-
-C<Unix::Processors>,
-
 =head1 DISTRIBUTION
 
-The latest version is available from CPAN.
+The latest version is available from CPAN and from L<http://www.veripool.com/>.
+
+Copyright 1999-2004 by Wilson Snyder.  This package is free software; you
+can redistribute it and/or modify it under the terms of either the GNU
+Lesser General Public License or the Perl Artistic License.
 
 =head1 AUTHORS
 
 Wilson Snyder <wsnyder@wsnyder.org>
+
+=head1 SEE ALSO
+
+L<Unix::Processors>
 
 =cut
 
@@ -77,7 +81,7 @@ use vars qw($VERSION);
 ######################################################################
 #### Configuration Section
 
-$VERSION = '2.021';
+$VERSION = '2.022';
 
 ######################################################################
 #### Code
