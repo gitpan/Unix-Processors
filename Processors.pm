@@ -1,5 +1,5 @@
 # Unix::Processors - Verilog PLI
-# $Id: Processors.pm,v 1.11 2003/05/05 13:29:23 wsnyder Exp $
+# $Id: Processors.pm,v 1.12 2003/05/05 13:32:19 wsnyder Exp $
 # Author: Wilson Snyder <wsnyder@wsnyder.org>
 ######################################################################
 #
@@ -72,7 +72,7 @@ Wilson Snyder <wsnyder@wsnyder.org>
 package Unix::Processors;
 use Unix::Processors::Info;
 
-$VERSION = '2.012';
+$VERSION = '2.013';
 
 require DynaLoader;
 @ISA = qw(DynaLoader);

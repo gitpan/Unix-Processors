@@ -66,8 +66,10 @@ This version of Unix::Processors has been built and tested on:
 @item aix-4.3.3
 @item aix-5.1.0 (32 and 64 bit)
 @item alpha-osf
+@item freebsd (clock methods not present)
 @item hpux-11.00
 @item hpux-11.11
+@item sgi-irix
 @item sparc-sun-solaris2.6
 @item sparc-sun-solaris2.8
 @end itemize

@@ -48,9 +48,13 @@ Supported Systems
 
    * alpha-osf
 
+   * freebsd (clock methods not present)
+
    * hpux-11.00
 
    * hpux-11.11
+
+   * sgi-irix
 
    * sparc-sun-solaris2.6
 
