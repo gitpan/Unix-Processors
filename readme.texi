@@ -22,7 +22,7 @@ This is the Unix::Processors Perl Package.
 @node Copyright, Description, Top, Top
 @section Copyright
 
-This package is Copyright 2000 by Wilson Snyder @email{wsnyder@@wsnyder.org}.
+This package is Copyright 2000-2003 by Wilson Snyder @email{wsnyder@@wsnyder.org}.
 
 You may distribute under the terms of either the GNU General Public License
 or the Artistic License, as specified in the Perl README file.
@@ -62,11 +62,14 @@ Download the latest package from that site, and decompress.
 This version of Unix::Processors has been built and tested on:
 
 @itemize @bullet
-@item sparc-sun-solaris2.6
 @item i386-linux
-@item hpux
+@item aix-4.3.3
+@item aix-5.1.0 (32 and 64 bit)
 @item alpha-osf
-@item aix
+@item hpux-11.00
+@item hpux-11.11
+@item sparc-sun-solaris2.6
+@item sparc-sun-solaris2.8
 @end itemize
 
 Porting will definately be necessary for other operating systems.

@@ -1,5 +1,5 @@
 #/* -*- Mode: C -*- */
-#/* $Id: Processors.xs,v 1.8 2002/12/30 22:01:42 wsnyder Exp $ */
+#/* $Id: Processors.xs,v 1.9 2003/01/02 14:53:55 wsnyder Exp $ */
 #/* Author: Wilson Snyder <wsnyder@wsnyder.org> */
 #/*##################################################################### */
 #/* */
@@ -48,6 +48,14 @@
 # define SUNOS
 #endif
 
+#ifdef AIX
+# ifdef HAS_PMAPI
+#  include <pmapi.h>
+# endif
+# ifdef HAS_PERFSTAT
+#  include <libperfstat.h>
+# endif
+#endif
 
 #ifdef HPUX
 #include <sys/param.h>
@@ -185,6 +193,25 @@ SV *self;
 CODE:
 {
     int clock = 0;
+#ifdef AIX
+# if defined(HAS_PERFSTAT)
+    perfstat_cpu_total_t data;
+    if (perfstat_cpu_total (0, &data, sizeof(data), 1)) {
+      clock = data.processorHZ / 1000000;
+    }
+# elif defined(HAS_PMAPI)
+    /* pm_cycles uses an approximation to arrive at cycle time
+     * so we round up to the nearest Mhz */
+    clock = (int)((pm_cycles() + 500000) / 1000000);
+# endif
+#endif
+#ifdef HPUX
+    /* all processors have the same clock on HP - just report the first one */
+    struct pst_processor psp;
+    if (pstat_getprocessor(&psp, sizeof(psp), 1, 0)) {    
+      clock = psp.psp_iticksperclktick / 10000;
+    }
+#endif
 #ifdef SUNOS
     int cpu;
     int last_cpu = 0;
@@ -203,6 +230,7 @@ CODE:
     int value = proc_cpuinfo_clock();
     if (value) clock = value;
 #endif
+
     RETVAL = clock;
 }
 OUTPUT: RETVAL
@@ -238,10 +266,35 @@ PROTOTYPE: $
 CODE:
 {
     int value = 0;
+#ifdef AIX
+    int num_cpus = proc_ncpus();
+    if (cpu < num_cpus) {
+# if defined(HAS_PERFSTAT)
+      perfstat_cpu_total_t data;
+      if (perfstat_cpu_total (0, &data, sizeof(data), 1)) {
+	value = data.processorHZ / 1000000;
+      }
+# elif defined(HAS_PMAPI)
+      /* pm_cycles uses an approximation to arrive at cycle time
+       * so we round up to the nearest Mhz */
+      clock = (int)((pm_cycles() + 500000) / 1000000);
+# endif
+    }
+#endif
+#ifdef HPUX
+    int num_cpus = proc_ncpus();
+    if (cpu < num_cpus) {
+      /* all processors have the same clock on HP - just report the first one */
+      struct pst_processor psp;
+      if (pstat_getprocessor(&psp, sizeof(psp), 1, 0)) {    
+	value = psp.psp_iticksperclktick / 10000;
+      }
+    }
+#endif
 #ifdef SUNOS
     processor_info_t info, *infop=&info;
     if (processor_info (cpu, infop)==0) {
-	value = infop->pi_clock;
+      value = infop->pi_clock;
     }
 #endif
 #ifdef __linux__
@@ -303,6 +356,36 @@ PROTOTYPE: $
 CODE:
 {
     char *value = NULL;
+#ifdef AIX
+# if defined(HAS_PERFSTAT)
+    int num_cpus = proc_ncpus();
+    if (cpu < num_cpus) {
+      perfstat_cpu_total_t data;
+      if (perfstat_cpu_total (0, &data, sizeof(data), 1)) {
+	value = data.description;
+      }
+    }
+# endif
+#endif
+#ifdef HPUX
+    int num_cpus = proc_ncpus();
+    if (cpu < num_cpus) {
+	switch(sysconf(_SC_CPU_VERSION)) {
+	case CPU_PA_RISC1_0:
+		value = "HP PA-RISC 1.0";
+		break;
+	case CPU_PA_RISC1_1:
+		value = "HP PA-RISC 1.1";
+		break;
+	case CPU_PA_RISC1_2:
+		value = "HP PA-RISC 1.2";
+		break;
+	case CPU_PA_RISC2_0:
+		value = "HP PA-RISC 2.0";
+		break;
+	}
+    }
+#endif
 #ifdef SUNOS
     processor_info_t info, *infop=&info;
     if (processor_info (cpu, infop)==0) {

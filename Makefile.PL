@@ -1,4 +1,4 @@
-# $Id: Makefile.PL,v 1.9 2002/08/30 14:30:32 wsnyder Exp $
+# $Id: Makefile.PL,v 1.10 2003/01/02 14:53:55 wsnyder Exp $
 # DESCRIPTION: Perl ExtUtils: Type 'perl Makefile.PL' to create a Makefile for this package
 
 use ExtUtils::MakeMaker;
@@ -25,12 +25,40 @@ dist: distcheck README
 ";
 }
 
+# Check for AIX libraries and headers required to support this package
+# System calls: perfstat_cpu_total, 
+#              /usr/include/libperfstat.h
+#              /usr/lib/libperfstat.a
+
+my $ARCH = `uname`;
+chomp($ARCH);
+
+my $libs;
+my $defs;
+my $incs;
+
+if ($ARCH eq "AIX") {
+    print "\nChecking for required AIX components...\n";
+    my $has_perfstat;
+    if (-f "/usr/include/libperfstat.h") {
+	print "  - libperfstat.a appears to be installed\n";
+	$libs = "-lperfstat";
+	$defs = "-DHAS_PERFSTAT";
+	$has_perfstat = 1;
+    } else {
+	print "  - libperfstat.a is not installed\n";
+    }
+    print "\n";
+}
+
 WriteMakefile(
 	      NAME => "Unix::Processors",
 	      AUTHOR	=> 'Wilson Snyder <wsnyder@wsnyder.org>',
 	      ABSTRACT_FROM => 'Processors.pm',
 	      VERSION_FROM  => 'Processors.pm',
 	      DISTNAME  => 'Unix-Processors',
+	      LIBS      => $libs,
+	      DEFINE    => $defs,
 	      'dist'    => {COMPRESS => 'gzip -9f',
 			    SUFFIX   => '.gz', 
 			    DIST_DEFAULT => 'README all tardist',

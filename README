@@ -3,7 +3,7 @@
 Copyright
 =========
 
-   This package is Copyright 2000 by Wilson Snyder
+   This package is Copyright 2000-2003 by Wilson Snyder
 <wsnyder@wsnyder.org>.
 
    You may distribute under the terms of either the GNU General Public
@@ -40,15 +40,21 @@ Supported Systems
 
    This version of Unix::Processors has been built and tested on:
 
-   * sparc-sun-solaris2.6
-
    * i386-linux
 
-   * hpux
+   * aix-4.3.3
+
+   * aix-5.1.0 (32 and 64 bit)
 
    * alpha-osf
 
-   * aix
+   * hpux-11.00
+
+   * hpux-11.11
+
+   * sparc-sun-solaris2.6
+
+   * sparc-sun-solaris2.8
 
    Porting will definately be necessary for other operating systems.
 
