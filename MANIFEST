@@ -1,0 +1,11 @@
+COPYING
+MANIFEST
+Makefile.PL
+test.pl
+Processors.pm
+Processors.xs
+README
+configure
+readme.texi
+typemap
+Processors/Info.pm
