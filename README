@@ -1,4 +1,4 @@
-This is the Unix::Processors Perl Package.
+   This is the Unix::Processors Perl Package.
 
 Copyright
 =========
@@ -7,10 +7,7 @@ Copyright
 <wsnyder@wsnyder.org>.
 
    You may distribute under the terms of either the GNU General Public
-License or the Artistic License, as specified in the Perl README file,
-with the exception that it cannot be placed on a CD-ROM or similar
-media for commercial distribution without the prior approval of the
-author.
+License or the Artistic License, as specified in the Perl README file.
 
    This code is provided with no warranty of any kind, and is used
 entirely at your own risk.
@@ -52,7 +49,7 @@ Supported Systems
 Installation
 ============
 
-  1. `cd' to the directory containing this INSTALL notice.
+  1. `cd' to the directory containing this README notice.
 
   2. Type `perl Makefile.PL' to configure Unix::Processors for your
      system.
