@@ -1,4 +1,5 @@
-#$Id: test.pl,v 1.2 1999/12/02 14:26:41 wsnyder Exp $
+#$Id: test.pl,v 1.3 2001/02/09 19:11:28 wsnyder Exp $
+# DESCRIPTION: Perl ExtUtils: Type 'make test' to test this package
 # Before `make install' is performed this script should be runnable with
 # `make test'. After `make install' it should work as `perl test.pl'
 

@@ -1,4 +1,5 @@
-# $Id: Makefile.PL,v 1.6 2000/01/21 13:38:38 wsnyder Exp $
+# $Id: Makefile.PL,v 1.8 2001/02/13 14:33:56 wsnyder Exp $
+# DESCRIPTION: Perl ExtUtils: Type 'perl Makefile.PL' to create a Makefile for this package
 
 use ExtUtils::MakeMaker;
 use Carp;
@@ -18,7 +19,7 @@ dist: distcheck README
 
 WriteMakefile(
 	      NAME => "Unix::Processors",
-	      AUTHOR	=> 'Wilson Snyder <wsnyder@world.std.com>',
+	      AUTHOR	=> 'Wilson Snyder <wsnyder@wsnyder.org>',
 	      ABSTRACT_FROM => 'Processors.pm',
 	      VERSION_FROM  => 'Processors.pm',
 	      DISTNAME  => 'Unix-Processors',

@@ -1,6 +1,6 @@
 #/* -*- Mode: C -*- */
-#/* $Id: Processors.xs,v 1.5 1999/12/08 22:42:42 wsnyder Exp $ */
-#/* Author: Wilson Snyder <wsnyder@world.std.com> */
+#/* $Id: Processors.xs,v 1.7 2001/02/13 14:33:57 wsnyder Exp $ */
+#/* Author: Wilson Snyder <wsnyder@wsnyder.org> */
 #/*##################################################################### */
 #/* */
 #/* This program is Copyright 1998 by Wilson Snyder. */
@@ -29,6 +29,11 @@
 #include <sys/types.h>
 #ifdef __sun__
 #include <sys/processor.h>
+#endif
+
+/* Missing in older headers */
+#ifndef P_POWEROFF
+#define P_POWEROFF 5
 #endif
 
 typedef int CpuNumFromRef_t;

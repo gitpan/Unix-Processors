@@ -1,6 +1,6 @@
 # Unix::Processors - Verilog PLI
-# $Id: Processors.pm,v 1.3 2000/01/21 13:57:06 wsnyder Exp $
-# Author: Wilson Snyder <wsnyder@ultranet.com>
+# $Id: Processors.pm,v 1.6 2001/02/13 14:37:02 wsnyder Exp $
+# Author: Wilson Snyder <wsnyder@wsnyder.org>
 ######################################################################
 #
 # This program is Copyright 2000 by Wilson Snyder.
@@ -67,14 +67,14 @@ The latest version is available from CPAN.
 
 =head1 AUTHORS
 
-Wilson Snyder <wsnyder@world.std.com>
+Wilson Snyder <wsnyder@wsnyder.org>
 
 =cut
 
 package Unix::Processors;
 use Unix::Processors::Info;
 
-$VERSION = '1.7';
+$VERSION = '1.8';
 
 require DynaLoader;
 @ISA = qw(DynaLoader);

@@ -1,6 +1,6 @@
 # Unix::Processor - Verilog PLI
-# $Id: Info.pm,v 1.3 2000/01/21 14:04:41 wsnyder Exp $
-# Author: Wilson Snyder <wsnyder@ultranet.com>
+# $Id: Info.pm,v 1.6 2001/02/13 14:36:56 wsnyder Exp $
+# Author: Wilson Snyder <wsnyder@wsnyder.org>
 ######################################################################
 #
 # This program is Copyright 2000 by Wilson Snyder.
@@ -65,7 +65,7 @@ The latest version is available from CPAN.
 
 =head1 AUTHORS
 
-Wilson Snyder <wsnyder@world.std.com>
+Wilson Snyder <wsnyder@wsnyder.org>
 
 =cut
 
@@ -80,7 +80,7 @@ use vars qw($VERSION);
 ######################################################################
 #### Configuration Section
 
-$VERSION = '1.7';
+$VERSION = '1.8';
 
 ######################################################################
 #### Code
