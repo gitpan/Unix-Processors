@@ -1,7 +1,7 @@
-# $Id: Makefile.PL,v 1.14 2004/03/10 18:29:58 wsnyder Exp $
+# $Id: Makefile.PL,v 1.16 2005/04/01 15:02:05 wsnyder Exp $
 # DESCRIPTION: Perl ExtUtils: Type 'perl Makefile.PL' to create a Makefile for this package
 #
-# Copyright 1998-2004 by Wilson Snyder.  This program is free software;
+# Copyright 1998-2005 by Wilson Snyder.  This program is free software;
 # you can redistribute it and/or modify it under the terms of either the GNU
 # General Public License or the Perl Artistic License.
 
@@ -66,6 +66,7 @@ WriteMakefile(
 	      AUTHOR	=> 'Wilson Snyder <wsnyder@wsnyder.org>',
 	      ABSTRACT_FROM => 'Processors.pm',
 	      VERSION_FROM  => 'Processors.pm',
+	      NO_META	=> 1,
 	      DISTNAME  => 'Unix-Processors',
 	      LIBS      => $libs,
 	      DEFINE    => $defs,

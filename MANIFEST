@@ -1,7 +1,7 @@
 COPYING
 MANIFEST
 Makefile.PL
-NEWS
+Changes
 Processors.pm
 Processors.xs
 Processors/Info.pm

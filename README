@@ -1,9 +1,12 @@
-   This is the Unix::Processors Perl Package.
+1 Unix::Processors
+******************
 
-Copyright
-=========
+This is the Unix::Processors Perl Package.
 
-   This package is Copyright 1999-2004 by Wilson Snyder
+1.1 Copyright
+=============
+
+This package is Copyright 1999-2005 by Wilson Snyder
 <wsnyder@wsnyder.org>.
 
    You may distribute under the terms of either the GNU General Public
@@ -13,10 +16,10 @@ file.
    This code is provided with no warranty of any kind, and is used
 entirely at your own risk.
 
-Description
-===========
+1.2 Description
+===============
 
-   This package provides access to per-processor information from Perl.
+This package provides access to per-processor information from Perl.
 
        my $procs = new Unix::Processors;
        print $procs->max_online, " CPUs at ", $procs->max_clock, " MHz\n";
@@ -31,18 +34,18 @@ Description
 
    See `man Unix::Processors' after installation.
 
-Obtaining Distribution
-======================
+1.3 Obtaining Distribution
+==========================
 
-   The latest version is available at `http://www.perl.org/CPAN/'
+The latest version is available at `http://www.perl.org/CPAN/'
 
    Download the latest package from that site, and decompress.  `gunzip
 Unix-Processors_version.tar.gz ; tar xvf Unix-Processors_version.tar'
 
-Supported Systems
-=================
+1.4 Supported Systems
+=====================
 
-   This version of Unix::Processors has been built and tested on:
+This version of Unix::Processors has been built and tested on:
 
    * i386-linux
 
@@ -66,8 +69,8 @@ Supported Systems
 
    Porting will definately be necessary for other operating systems.
 
-Installation
-============
+1.5 Installation
+================
 
   1. `cd' to the directory containing this README notice.
 

@@ -1,10 +1,10 @@
 #/* -*- Mode: C -*- */
-#/* $Id: Processors.xs,v 1.15 2004/04/05 14:38:05 wsnyder Exp $ */
+#/* $Id: Processors.xs,v 1.18 2005/04/01 15:02:05 wsnyder Exp $ */
 #/* Author: Wilson Snyder <wsnyder@wsnyder.org> */
 #/* IRIX & FreeBSD port by: Daniel Gustafson <daniel@hobbit.se> */
 #/*##################################################################### */
 #/* */
-#/* Copyright 1999-2004 by Wilson Snyder.  This program is free software; */
+#/* Copyright 1999-2005 by Wilson Snyder.  This program is free software; */
 #/* you can redistribute it and/or modify it under the terms of either the GNU */
 #/* General Public License or the Perl Artistic License. */
 #/*  */
@@ -90,6 +90,7 @@ struct pst_dynamic psd;
 #include <stdlib.h>
 #include <sys/types.h>
 #include <sys/sysctl.h>
+#include <sys/param.h>
 #endif
 
 /* Missing in older headers */
@@ -179,7 +180,7 @@ int proc_ncpus (void)
 
 #ifdef __FreeBSD__
     int len = sizeof(num_cpus);
-    sysctlbyname("hw.ncpu", &num_cpus, &len, NULL, NULL);
+    sysctlbyname("hw.ncpu", &num_cpus, &len, NULL, 0);
 #endif
 
     if (num_cpus < 1)
@@ -240,10 +241,11 @@ int logical_per_physical_cpu() {
 #endif
 #ifdef __FreeBSD__
     int hlt_htt_cpu = 0;
+    int len = sizeof(hlt_htt_cpu);
     if (sysctlbyname("machdep.hlt_logical_cpus",
-		     &hlt_htt_cpu, sizeof(hlt_htt_cpu), NULL, NULL) == 0) {
+		     &hlt_htt_cpu, &len, NULL, 0) == 0) {
 	if (hlt_htt_cpu == 0) {
-	    /* HACK: Current linux under hyperthreading always makes 2 logical CPUs per physical CPU */
+	    /* HACK: Current FreeBSD under hyperthreading always makes 2 logical CPUs per physical CPU */
 	    logical_per = 2;
 	}
     }
@@ -265,6 +267,7 @@ max_online(self)
 SV *self;
 CODE:
 {
+    if (self) {}  // Prevent unused warning
     RETVAL = proc_ncpus();
 }
 OUTPUT: RETVAL
@@ -279,6 +282,7 @@ SV *self;
 CODE:
 {
     int cpus = proc_ncpus();
+    if (self) {}  // Prevent unused warning
     if (cpus > 1) {
 	cpus /= logical_per_physical_cpu();
     }
@@ -354,11 +358,23 @@ CODE:
 	}
     }
 #endif
+#if (defined(__FreeBSD__) && (__FreeBSD_version >= 503105))
+    int value = 0;
+    int len = sizeof(value);
+    /* 
+     * Even if the frequency is modified using cpu_freq(3), all cpus 
+     * have the same value why we can request CPU 0 for max_clock.
+     */
+    if (sysctlbyname("dev.cpu.0.freq", &value, &len, NULL, 0) == 0) {
+	clock = value;
+    }
+#endif
 #ifdef __linux__
     int value = proc_cpuinfo_clock();
     if (value) clock = value;
 #endif
 
+    if (self) {}  // Prevent unused warning
     RETVAL = clock;
 }
 OUTPUT: RETVAL
@@ -444,6 +460,15 @@ CODE:
 	cpu_info = irix_get_cpuinf(cpu);
 	if (cpu_info.ic_cpuid == cpu)
 	    value = cpu_info.ic_cpu_info.cpufq;
+    }
+#endif
+#if (defined(__FreeBSD__) && (__FreeBSD_version >= 503105))
+    int cpu_freq = 0;
+    int len =  sizeof(cpu_freq);
+    char cpu_freq_req[16];
+    snprintf(cpu_freq_req, 16, "dev.cpu.%d.freq", cpu);
+    if (sysctlbyname(cpu_freq_req, &cpu_freq, &len, NULL, 0) == 0) {
+	value = cpu_freq;
     }
 #endif
 #ifdef __linux__
@@ -663,7 +688,7 @@ CODE:
     if (cpu < proc_ncpus()) {
 	if ((value = (char *)malloc(64)) != NULL) {
 	    int len = 64;
-	    sysctlbyname("hw.machine_arch", value, &len, NULL, NULL);
+	    sysctlbyname("hw.machine_arch", value, &len, NULL, 0);
 	}
     }
 #endif
