@@ -1,5 +1,5 @@
 #/* -*- Mode: C -*- */
-#/* $Id: Processors.xs,v 1.3 1999/12/02 14:26:41 wsnyder Exp $ */
+#/* $Id: Processors.xs,v 1.4 1999/12/02 14:31:44 wsnyder Exp $ */
 #/* Author: Wilson Snyder <wsnyder@world.std.com> */
 #/*##################################################################### */
 #/* */
@@ -225,6 +225,7 @@ CODE:
     int ncpu = sysconf(_SC_NPROCESSORS_ONLN);
     if (cpu < ncpu) {
 	value = proc_cpuinfo_field ("model name");
+	if (!value) value = proc_cpuinfo_field ("machine");
     }
 #endif
     if (value) {
