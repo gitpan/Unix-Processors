@@ -1,9 +1,9 @@
 #/* -*- Mode: C -*- */
-#/* $Id: Processors.xs,v 1.7 2001/02/13 14:33:57 wsnyder Exp $ */
+#/* $Id: Processors.xs,v 1.8 2002/12/30 22:01:42 wsnyder Exp $ */
 #/* Author: Wilson Snyder <wsnyder@wsnyder.org> */
 #/*##################################################################### */
 #/* */
-#/* This program is Copyright 1998 by Wilson Snyder. */
+#/* This program is Copyright 2002 by Wilson Snyder. */
 #/* This program is free software; you can redistribute it and/or */
 #/* modify it under the terms of the GNU General Public License */
 #/* as published by the Free Software Foundation; either version 2 */
@@ -27,7 +27,44 @@
 #include <stdio.h>
 #include <string.h>
 #include <sys/types.h>
-#ifdef __sun__
+
+#if defined(_AIX)
+# define AIX
+#endif
+
+#if defined(hpux) || defined(__hpux)
+# define HPUX
+#endif
+
+#if defined(__osf__) && (defined(__alpha) || defined(__alpha__))
+# define OSF_ALPHA
+#endif
+
+#if defined(__mips)
+# define MIPS
+#endif
+
+#if defined(sun) || defined(__sun__)
+# define SUNOS
+#endif
+
+
+#ifdef HPUX
+#include <sys/param.h>
+#include <sys/pstat.h>
+struct pst_dynamic psd;
+#endif
+
+#ifdef OSF_ALPHA
+#include <sys/sysinfo.h>
+#include <machine/hal_sysinfo.h>
+#endif
+
+#ifdef MIPS
+#include <sys/systeminfo.h>
+#endif
+
+#ifdef SUNOS
 #include <sys/processor.h>
 #endif
 
@@ -37,6 +74,8 @@
 #endif
 
 typedef int CpuNumFromRef_t;
+
+#/**************************************************************/
 
 #ifdef __linux__
 char *proc_cpuinfo_field (const char *field)
@@ -82,17 +121,41 @@ int proc_cpuinfo_clock (void)
 int proc_ncpus (void)
     /* Return number of cpus */
 {
-    int ncpu = sysconf(_SC_NPROCESSORS_ONLN);
-#ifdef __linux__
-    if (ncpu < 1) {
+    int num_cpus = 0;
+
+    /* Determine how many processors are online and available */
+#ifdef HPUX
+    if (pstat_getdynamic(&psd, sizeof(psd), (size_t)1, 0) != -1)
+        num_cpus = psd.psd_proc_cnt;
+#endif
+
+#ifdef OSF_ALPHA
+    getsysinfo(GSI_CPUS_IN_BOX,&num_cpus,sizeof(num_cpus),0,0)
+#endif
+
+#ifdef MIPS
+    char buf[16];
+    if (sysinfo(_MIPS_SI_NUM_PROCESSORS, buf, 10) != -1)
+        num_cpus = atoi(buf);
+#endif
+
+    /* Generic linux defaults */
+#if defined(SUNOS) || defined(AIX) || defined (__linux__)
+    if (num_cpus < 1)
+	num_cpus = sysconf(_SC_NPROCESSORS_ONLN);
+# ifdef __linux__
+    if (num_cpus < 1) {
 	/* SPARC Linux has a bug where SC_NPROCESSORS is set to 0. */
 	char *value;
 	value = proc_cpuinfo_field("ncpus active");
-	if (value) ncpu = atoi(value);
+	if (value) num_cpus = atoi(value);
     }
+# endif
 #endif
-    if (ncpu<1) ncpu=1;	/* We're running this program, after all :-) */
-    return (ncpu);
+
+    if (num_cpus < 1)
+        num_cpus=1;      /* We're running this program, after all :-) */
+    return (num_cpus);
 }
 
 MODULE = Unix::Processors  PACKAGE = Unix::Processors
@@ -122,7 +185,7 @@ SV *self;
 CODE:
 {
     int clock = 0;
-#ifdef __sun__
+#ifdef SUNOS
     int cpu;
     int last_cpu = 0;
     processor_info_t info, *infop=&info;
@@ -168,27 +231,30 @@ OUTPUT: RETVAL
 #/**********************************************************************/
 #/* class->clock() */
 
-int
+SV *
 clock (cpu)
 CpuNumFromRef_t cpu
 PROTOTYPE: $
 CODE:
 {
-#ifdef __sun__
+    int value = 0;
+#ifdef SUNOS
     processor_info_t info, *infop=&info;
-    RETVAL = 0;
     if (processor_info (cpu, infop)==0) {
-	RETVAL = infop->pi_clock;
+	value = infop->pi_clock;
     }
 #endif
 #ifdef __linux__
     /* Cheat... Same clock for every CPU */
-    int value = proc_cpuinfo_clock();
-    RETVAL = 0;
-    if (value) RETVAL = value;
+    value = proc_cpuinfo_clock();
 #endif
+    if (value) {
+	ST(0) = sv_newmortal();
+	sv_setiv (ST(0), value);
+    } else {
+	ST(0) = &PL_sv_undef;
+    }
 }
-OUTPUT: RETVAL
 
 #/**********************************************************************/
 #/* class->state() */
@@ -200,7 +266,7 @@ PROTOTYPE: $
 CODE:
 {
     char *value = NULL;
-#ifdef __sun__
+#ifdef SUNOS
     processor_info_t info, *infop=&info;
     if (processor_info (cpu, infop)==0) {
 	switch (infop->pi_state) {
@@ -215,8 +281,7 @@ CODE:
 	    break;
 	}
     }
-#endif
-#ifdef __linux__
+#else
     /* Cheat... Assume all online */
     value = "online";
 #endif
@@ -238,7 +303,7 @@ PROTOTYPE: $
 CODE:
 {
     char *value = NULL;
-#ifdef __sun__
+#ifdef SUNOS
     processor_info_t info, *infop=&info;
     if (processor_info (cpu, infop)==0) {
 	value = infop->pi_processor_type;

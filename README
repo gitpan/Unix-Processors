@@ -44,6 +44,12 @@ Supported Systems
 
    * i386-linux
 
+   * hpux
+
+   * alpha-osf
+
+   * aix
+
    Porting will definately be necessary for other operating systems.
 
 Installation

@@ -64,6 +64,9 @@ This version of Unix::Processors has been built and tested on:
 @itemize @bullet
 @item sparc-sun-solaris2.6
 @item i386-linux
+@item hpux
+@item alpha-osf
+@item aix
 @end itemize
 
 Porting will definately be necessary for other operating systems.

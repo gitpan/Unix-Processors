@@ -1,5 +1,5 @@
 # Unix::Processor - Verilog PLI
-# $Id: Info.pm,v 1.8 2002/08/30 14:30:00 wsnyder Exp $
+# $Id: Info.pm,v 1.9 2002/12/30 22:01:42 wsnyder Exp $
 # Author: Wilson Snyder <wsnyder@wsnyder.org>
 ######################################################################
 #
@@ -78,7 +78,7 @@ use vars qw($VERSION);
 ######################################################################
 #### Configuration Section
 
-$VERSION = '1.9';
+$VERSION = '2.010';
 
 ######################################################################
 #### Code
