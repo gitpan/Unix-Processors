@@ -1,15 +1,15 @@
 # Unix::Processors - Verilog PLI
-# $Id: Processors.pm,v 1.1 1999/11/15 20:38:18 wsnyder Exp $
+# $Id: Processors.pm,v 1.3 2000/01/21 13:57:06 wsnyder Exp $
 # Author: Wilson Snyder <wsnyder@ultranet.com>
 ######################################################################
 #
-# This package provides processor_info access routines
-# 
-# This program is Copyright 1998 by Wilson Snyder.
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
+# This program is Copyright 2000 by Wilson Snyder.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of either the GNU General Public License or the
+# Perl Artistic License, with the exception that it cannot be placed
+# on a CD-ROM or similar media for commercial distribution without the
+# prior approval of the author.
 # 
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -73,6 +73,8 @@ Wilson Snyder <wsnyder@world.std.com>
 
 package Unix::Processors;
 use Unix::Processors::Info;
+
+$VERSION = '1.7';
 
 require DynaLoader;
 @ISA = qw(DynaLoader);

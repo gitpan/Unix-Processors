@@ -1,11 +1,12 @@
 COPYING
 MANIFEST
 Makefile.PL
-test.pl
+NEWS
 Processors.pm
 Processors.xs
+Processors/Info.pm
 README
 configure
 readme.texi
+test.pl
 typemap
-Processors/Info.pm

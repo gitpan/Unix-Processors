@@ -1,15 +1,15 @@
 # Unix::Processor - Verilog PLI
-# $Id: Info.pm,v 1.1 1999/11/15 20:38:22 wsnyder Exp $
+# $Id: Info.pm,v 1.3 2000/01/21 14:04:41 wsnyder Exp $
 # Author: Wilson Snyder <wsnyder@ultranet.com>
 ######################################################################
 #
-# This package provides processor_info access routines
-# 
-# This program is Copyright 1998 by Wilson Snyder.
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
+# This program is Copyright 2000 by Wilson Snyder.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of either the GNU General Public License or the
+# Perl Artistic License, with the exception that it cannot be placed
+# on a CD-ROM or similar media for commercial distribution without the
+# prior approval of the author.
 # 
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -80,7 +80,7 @@ use vars qw($VERSION);
 ######################################################################
 #### Configuration Section
 
-$VERSION = "1.1";
+$VERSION = '1.7';
 
 ######################################################################
 #### Code
