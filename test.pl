@@ -1,4 +1,4 @@
-#$Id: test.pl,v 1.1 1999/11/15 20:38:18 wsnyder Exp $
+#$Id: test.pl,v 1.2 1999/12/02 14:26:41 wsnyder Exp $
 # Before `make install' is performed this script should be runnable with
 # `make test'. After `make install' it should work as `perl test.pl'
 
@@ -44,7 +44,6 @@ foreach my $proc (@{$procs->processors}) {
     printf ("Id %s  State %s  Clock %s  Type %s\n",
 	    $proc->id, $proc->state, $proc->clock, $proc->type);
 }
-print "This test may fail on non-sparc systems\n";
 print (($ok) ? "ok 6\n" : "not ok 6\n");
 
 # 7: Destructor

@@ -1,5 +1,5 @@
 #/* -*- Mode: C -*- */
-#/* $Id: Processors.xs,v 1.2 1999/12/01 15:42:11 wsnyder Exp $ */
+#/* $Id: Processors.xs,v 1.3 1999/12/02 14:26:41 wsnyder Exp $ */
 #/* Author: Wilson Snyder <wsnyder@world.std.com> */
 #/*##################################################################### */
 #/* */
@@ -56,6 +56,19 @@ char *proc_cpuinfo_field (const char *field)
     }
     return (result);
 }
+
+int proc_cpuinfo_clock (void)
+{
+    char *value;
+    value = proc_cpuinfo_field ("cpu MHz");
+    if (value) return (atoi(value));
+    value = proc_cpuinfo_field ("clock");
+    if (value) return (atoi(value));
+    value = proc_cpuinfo_field ("bogomips");
+    if (value) return (atoi(value));
+    return (0);
+}
+
 #endif
 
 
@@ -101,8 +114,8 @@ CODE:
     }
 #endif
 #ifdef __linux__
-    char *value = proc_cpuinfo_field ("cpu MHz");
-    if (value) clock = atoi(value);
+    int value = proc_cpuinfo_clock();
+    if (value) clock = value;
 #endif
     RETVAL = clock;
 }
@@ -147,9 +160,9 @@ CODE:
 #endif
 #ifdef __linux__
     /* Cheat... Same clock for every CPU */
-    char *value = proc_cpuinfo_field ("cpu MHz");
+    int value = proc_cpuinfo_clock();
     RETVAL = 0;
-    if (value) RETVAL = atoi(value);
+    if (value) RETVAL = value;
 #endif
 }
 OUTPUT: RETVAL
