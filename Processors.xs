@@ -1,5 +1,5 @@
 #/* -*- Mode: C -*- */
-#/* $Id: Processors.xs,v 1.1 1999/11/15 20:38:18 wsnyder Exp $ */
+#/* $Id: Processors.xs,v 1.2 1999/12/01 15:42:11 wsnyder Exp $ */
 #/* Author: Wilson Snyder <wsnyder@world.std.com> */
 #/*##################################################################### */
 #/* */
@@ -24,10 +24,40 @@
 #include "XSUB.h"
 
 #include <unistd.h>
+#include <stdio.h>
+#include <string.h>
 #include <sys/types.h>
+#ifdef __sun__
 #include <sys/processor.h>
+#endif
 
 typedef int CpuNumFromRef_t;
+
+#ifdef __linux__
+char *proc_cpuinfo_field (const char *field)
+{
+    FILE *fp;
+    static char line[1000];
+    int len = strlen(field);
+    char *result = NULL;
+    if (NULL!=(fp = fopen ("/proc/cpuinfo", "r"))) {
+	while (!feof(fp) && result==NULL) {
+	    fgets (line, 990, fp);
+	    if (0==strncmp (field, line, len)) {
+		char *loc = strchr (line, ':');
+		if (loc) {
+		    result = loc+2;
+		    loc = strchr (result, '\n');
+		    if (loc) *loc = '\0';
+		}
+	    }
+	}
+	fclose(fp);
+    }
+    return (result);
+}
+#endif
+
 
 MODULE = Unix::Processors  PACKAGE = Unix::Processors
 
@@ -56,6 +86,7 @@ SV *self;
 CODE:
 {
     int clock = 0;
+#ifdef __sun__
     int cpu;
     int last_cpu = 0;
     processor_info_t info, *infop=&info;
@@ -68,6 +99,11 @@ CODE:
 	    last_cpu = cpu;
 	}
     }
+#endif
+#ifdef __linux__
+    char *value = proc_cpuinfo_field ("cpu MHz");
+    if (value) clock = atoi(value);
+#endif
     RETVAL = clock;
 }
 OUTPUT: RETVAL
@@ -102,11 +138,19 @@ CpuNumFromRef_t cpu
 PROTOTYPE: $
 CODE:
 {
+#ifdef __sun__
     processor_info_t info, *infop=&info;
     RETVAL = 0;
     if (processor_info (cpu, infop)==0) {
 	RETVAL = infop->pi_clock;
     }
+#endif
+#ifdef __linux__
+    /* Cheat... Same clock for every CPU */
+    char *value = proc_cpuinfo_field ("cpu MHz");
+    RETVAL = 0;
+    if (value) RETVAL = atoi(value);
+#endif
 }
 OUTPUT: RETVAL
 
@@ -119,23 +163,32 @@ CpuNumFromRef_t cpu
 PROTOTYPE: $
 CODE:
 {
+    char *value = NULL;
+#ifdef __sun__
     processor_info_t info, *infop=&info;
-    ST(0) = &PL_sv_undef;
     if (processor_info (cpu, infop)==0) {
 	switch (infop->pi_state) {
 	case P_ONLINE:
-	    ST(0) = sv_newmortal();
-	    sv_setpv (ST(0), "online");
+	    value = "online";
 	    break;
 	case P_OFFLINE:
-	    ST(0) = sv_newmortal();
-	    sv_setpv (ST(0), "offline");
+	    value = "offline";
 	    break;
 	case P_POWEROFF:
-	    ST(0) = sv_newmortal();
-	    sv_setpv (ST(0), "poweroff");
+	    value = "poweroff";
 	    break;
 	}
+    }
+#endif
+#ifdef __linux__
+    /* Cheat... Assume all online */
+    value = "online";
+#endif
+    if (value) {
+	ST(0) = sv_newmortal();
+	sv_setpv (ST(0), value);
+    } else {
+	ST(0) = &PL_sv_undef;
     }
 }
 
@@ -148,10 +201,23 @@ CpuNumFromRef_t cpu
 PROTOTYPE: $
 CODE:
 {
+    char *value = NULL;
+#ifdef __sun__
     processor_info_t info, *infop=&info;
-    ST(0) = &PL_sv_undef;
     if (processor_info (cpu, infop)==0) {
+	value = infop->pi_processor_type;
+    }
+#endif
+#ifdef __linux__
+    int ncpu = sysconf(_SC_NPROCESSORS_ONLN);
+    if (cpu < ncpu) {
+	value = proc_cpuinfo_field ("model name");
+    }
+#endif
+    if (value) {
 	ST(0) = sv_newmortal();
-	sv_setpv (ST(0), infop->pi_processor_type);
+	sv_setpv (ST(0), value);
+    } else {
+	ST(0) = &PL_sv_undef;
     }
 }

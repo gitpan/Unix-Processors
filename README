@@ -1,4 +1,4 @@
-This is the Unix::Processors Perl Package.
+   This is the Unix::Processors Perl Package.
 
 Copyright
 =========
@@ -45,8 +45,9 @@ Supported Systems
 
    * sparc-sun-solaris2.6
 
+   * i386-linux
+
    Porting will definately be necessary for other operating systems.
-Linux should be comming soon.
 
 Installation
 ============

@@ -1,4 +1,4 @@
-# $Id: Makefile.PL,v 1.1 1999/11/15 20:38:18 wsnyder Exp $
+# $Id: Makefile.PL,v 1.2 1999/12/01 15:42:11 wsnyder Exp $
 
 use ExtUtils::MakeMaker;
 use Carp;
@@ -18,7 +18,7 @@ dist: distcheck README
 
 WriteMakefile(
 	      NAME => "Unix::Processors",
-	      VERSION   => '1.1',
+	      VERSION   => '1.2',
 	      DISTNAME  => 'Unix-Processors',
 	      'dist'    => {COMPRESS => 'gzip -9f',
 			    SUFFIX   => '.gz', 
