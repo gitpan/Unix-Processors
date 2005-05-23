@@ -55,7 +55,7 @@ This version of Unix::Processors has been built and tested on:
 
    * alpha-osf
 
-   * freebsd (clock methods not present)
+   * freebsd (clock methods not supported before freebsd 5.4)
 
    * hpux-11.00
 

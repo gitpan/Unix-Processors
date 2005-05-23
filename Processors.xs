@@ -1,5 +1,5 @@
 #/* -*- Mode: C -*- */
-#/* $Id: Processors.xs,v 1.18 2005/04/01 15:02:05 wsnyder Exp $ */
+#/* $Id: Processors.xs,v 1.19 2005/05/23 15:19:04 wsnyder Exp $ */
 #/* Author: Wilson Snyder <wsnyder@wsnyder.org> */
 #/* IRIX & FreeBSD port by: Daniel Gustafson <daniel@hobbit.se> */
 #/*##################################################################### */
@@ -267,7 +267,7 @@ max_online(self)
 SV *self;
 CODE:
 {
-    if (self) {}  // Prevent unused warning
+    if (self) {}  /* Prevent unused warning */
     RETVAL = proc_ncpus();
 }
 OUTPUT: RETVAL
@@ -282,7 +282,7 @@ SV *self;
 CODE:
 {
     int cpus = proc_ncpus();
-    if (self) {}  // Prevent unused warning
+    if (self) {}  /* Prevent unused warning */
     if (cpus > 1) {
 	cpus /= logical_per_physical_cpu();
     }
@@ -374,7 +374,7 @@ CODE:
     if (value) clock = value;
 #endif
 
-    if (self) {}  // Prevent unused warning
+    if (self) {}  /* Prevent unused warning */
     RETVAL = clock;
 }
 OUTPUT: RETVAL

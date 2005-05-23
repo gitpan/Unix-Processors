@@ -4,7 +4,7 @@
 @settitle Perl Unix::Processors Installation
 @c %**end of header
 
-@c $Revision: 1.16 $$Date: 2005/04/01 15:02:05 $$Author: wsnyder $
+@c $Revision: 1.17 $$Date: 2005/04/04 12:50:59 $$Author: wsnyder $
 @c DESCRIPTION: TexInfo: DOCUMENT source run through texinfo to produce README file
 @c Use 'make README' to produce the output file
 @c Before release, run C-u C-c C-u C-a (texinfo-all-menus-update)
@@ -72,7 +72,7 @@ This version of Unix::Processors has been built and tested on:
 @item aix-4.3.3
 @item aix-5.1.0 (32 and 64 bit)
 @item alpha-osf
-@item freebsd (clock methods not present)
+@item freebsd (clock methods not supported before freebsd 5.4)
 @item hpux-11.00
 @item hpux-11.11
 @item sgi-irix
