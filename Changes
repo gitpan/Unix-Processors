@@ -2,6 +2,10 @@ Revision history for Perl extension Unix::Processors
 
 The contributors that suggested a given feature are shown in [].
 
+* Unix::Processors 2.032 07/01/2005
+
+***	Added support for Itanium irelinux.  [by Tim Berke]
+
 * Unix::Processors 2.031 05/23/2005
 
 ****	Fix C++ Comments [Merijn Brand]
@@ -64,7 +68,7 @@ The contributors that suggested a given feature are shown in [].
 **	First CPAN Release
 
 ----------------------------------------------------------------------
-$Id: Changes,v 1.6 2005/05/23 15:27:38 wsnyder Exp $
+$Id: Changes,v 1.7 2005/07/01 18:09:25 wsnyder Exp $
 ----------------------------------------------------------------------
 
 This uses outline mode in Emacs.  See C-h m [M-x describe-mode].

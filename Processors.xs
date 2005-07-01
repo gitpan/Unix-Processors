@@ -1,5 +1,5 @@
 #/* -*- Mode: C -*- */
-#/* $Id: Processors.xs,v 1.19 2005/05/23 15:19:04 wsnyder Exp $ */
+#/* $Id: Processors.xs,v 1.20 2005/07/01 18:09:25 wsnyder Exp $ */
 #/* Author: Wilson Snyder <wsnyder@wsnyder.org> */
 #/* IRIX & FreeBSD port by: Daniel Gustafson <daniel@hobbit.se> */
 #/*##################################################################### */
@@ -234,7 +234,7 @@ int logical_per_physical_cpu() {
 #ifdef __linux__
     char* flags = proc_cpuinfo_field ("flags");
     /* flags: ... ht ... indicates hyperthreading enabled on a cpu */
-    if (strstr (flags, " ht ")) {
+    if (flags && strstr (flags, " ht ")) {
 	/* HACK: Current linux under hyperthreading always makes 2 logical CPUs per physical CPU */
 	logical_per = 2;
     }
@@ -608,6 +608,7 @@ CODE:
     if (cpu < ncpu) {
 	value = proc_cpuinfo_field ("model name");
 	if (!value) value = proc_cpuinfo_field ("machine");
+	if (!value) value = proc_cpuinfo_field ("family");
     }
 #endif
 #ifdef MIPS
