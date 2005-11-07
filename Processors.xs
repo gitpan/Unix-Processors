@@ -1,5 +1,5 @@
 #/* -*- Mode: C -*- */
-#/* $Id: Processors.xs,v 1.20 2005/07/01 18:09:25 wsnyder Exp $ */
+#/* $Id: Processors.xs,v 1.21 2005/11/07 16:40:02 wsnyder Exp $ */
 #/* Author: Wilson Snyder <wsnyder@wsnyder.org> */
 #/* IRIX & FreeBSD port by: Daniel Gustafson <daniel@hobbit.se> */
 #/*##################################################################### */
@@ -86,7 +86,7 @@ struct pst_dynamic psd;
 #include <sys/processor.h>
 #endif
 
-#ifdef __FreeBSD__
+#if defined(__FreeBSD__) || defined(__APPLE__)
 #include <stdlib.h>
 #include <sys/types.h>
 #include <sys/sysctl.h>
@@ -178,9 +178,9 @@ int proc_ncpus (void)
 # endif
 #endif
 
-#ifdef __FreeBSD__
+#if defined(__FreeBSD__) || defined(HW_NCPU)
     int len = sizeof(num_cpus);
-    sysctlbyname("hw.ncpu", &num_cpus, &len, NULL, 0);
+    sysctlbyname("hw.ncpu", &num_cpus, (void*)(&len), NULL, 0);
 #endif
 
     if (num_cpus < 1)
@@ -366,6 +366,12 @@ CODE:
      * have the same value why we can request CPU 0 for max_clock.
      */
     if (sysctlbyname("dev.cpu.0.freq", &value, &len, NULL, 0) == 0) {
+	clock = value;
+    }
+#elif defined(HW_CPU_FREQ)
+    long long value = 0;
+    int len = sizeof(value);
+    if (sysctlbyname("hw.cpufrequency", &value, (void*)(&len), NULL, 0) == 0) {
 	clock = value;
     }
 #endif
