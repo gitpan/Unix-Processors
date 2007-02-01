@@ -2,6 +2,10 @@ Revision history for Perl extension Unix::Processors
 
 The contributors that suggested a given feature are shown in [].
 
+* Unix::Processors 2.034 2/1/2007
+
+***	Fix Linux on MIPS support.
+
 * Unix::Processors 2.033 11/07/2005
 
 ***	Fix Mac OS X Panther and Tiger support.
@@ -72,12 +76,13 @@ The contributors that suggested a given feature are shown in [].
 **	First CPAN Release
 
 ----------------------------------------------------------------------
-$Id: Changes,v 1.8 2005/11/07 16:40:02 wsnyder Exp $
+$Id: Changes 43 2007-02-01 20:03:09Z wsnyder $
+DESCRIPTION: Documentation on change history for this package
 ----------------------------------------------------------------------
 
 This uses outline mode in Emacs.  See C-h m [M-x describe-mode].
 
-Copyright 1999-2005 by Wilson Snyder.  This program is free software;
+Copyright 1999-2007 by Wilson Snyder.  This program is free software;
 you can redistribute it and/or modify it under the terms of either the GNU
 General Public License or the Perl Artistic License.
 

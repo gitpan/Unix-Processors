@@ -4,7 +4,7 @@
 @settitle Perl Unix::Processors Installation
 @c %**end of header
 
-@c $Revision: 1.17 $$Date: 2005/04/04 12:50:59 $$Author: wsnyder $
+@c $Revision: 43 $$Date: 2007-02-01 15:03:09 -0500 (Thu, 01 Feb 2007) $$Author: wsnyder $
 @c DESCRIPTION: TexInfo: DOCUMENT source run through texinfo to produce README file
 @c Use 'make README' to produce the output file
 @c Before release, run C-u C-c C-u C-a (texinfo-all-menus-update)
@@ -25,7 +25,7 @@ This is the Unix::Processors Perl Package.
 @node Copyright, Description, Top, Top
 @section Copyright
 
-This package is Copyright 1999-2005 by Wilson Snyder @email{wsnyder@@wsnyder.org}.
+This package is Copyright 1999-2007 by Wilson Snyder @email{wsnyder@@wsnyder.org}.
 
 You may distribute under the terms of either the GNU General Public License
 or the Perl Artistic License, as specified in the Perl README file.

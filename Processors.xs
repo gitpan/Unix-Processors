@@ -1,10 +1,10 @@
 #/* -*- Mode: C -*- */
-#/* $Id: Processors.xs,v 1.21 2005/11/07 16:40:02 wsnyder Exp $ */
+#/* $Id: Processors.xs 43 2007-02-01 20:03:09Z wsnyder $ */
 #/* Author: Wilson Snyder <wsnyder@wsnyder.org> */
 #/* IRIX & FreeBSD port by: Daniel Gustafson <daniel@hobbit.se> */
 #/*##################################################################### */
 #/* */
-#/* Copyright 1999-2005 by Wilson Snyder.  This program is free software; */
+#/* Copyright 1999-2007 by Wilson Snyder.  This program is free software; */
 #/* you can redistribute it and/or modify it under the terms of either the GNU */
 #/* General Public License or the Perl Artistic License. */
 #/*  */
@@ -67,7 +67,7 @@ struct pst_dynamic psd;
 #include <machine/hal_sysinfo.h>
 #endif
 
-#ifdef MIPS
+#if defined(MIPS) && !defined(__linux__)
 #include <sys/systeminfo.h>
 #endif
 
@@ -158,7 +158,7 @@ int proc_ncpus (void)
     getsysinfo(GSI_CPUS_IN_BOX,&num_cpus,sizeof(num_cpus),0,0)
 #endif
 
-#ifdef MIPS
+#if defined(MIPS) && !defined(__linux__)
     char buf[16];
     if (sysinfo(_MIPS_SI_NUM_PROCESSORS, buf, 10) != -1)
         num_cpus = atoi(buf);
@@ -617,7 +617,7 @@ CODE:
 	if (!value) value = proc_cpuinfo_field ("family");
     }
 #endif
-#ifdef MIPS
+#if defined(MIPS) && !defined(__linux__)
     if (cpu < proc_ncpus()) {
 	if ((value = (char *)malloc(64)) != NULL) {
 	    sysinfo(SI_MACHINE, value, 64);
