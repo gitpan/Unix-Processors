@@ -1,4 +1,3 @@
-# $Id: Makefile.PL 43 2007-02-01 20:03:09Z wsnyder $
 # DESCRIPTION: Perl ExtUtils: Type 'perl Makefile.PL' to create a Makefile for this package
 #
 # Copyright 1998-2005 by Wilson Snyder.  This program is free software;
@@ -16,17 +15,17 @@ README: readme.texi
 
 ## Maintainer use:
 preexist:
-	test ! -r \$(HOME)/src/kits/\$(DISTVNAME).tar.gz
+	svnorcvs nexists \$(DISTNAME)_\$(VERSION_SYM)
+	test -s README
 
 tag:
 	svnorcvs tag  \$(DISTNAME)_\$(VERSION_SYM)
 
 maintainer-diff:
-	svnorcvs diff \$(DISTNAME)_\$(VERSION_SYM) 
+	svnorcvs diff \$(DISTNAME)_\$(VERSION_SYM)
 
 maintainer-dist: preexist dist tag
-	cp \$(DISTVNAME).tar.gz \$(HOME)/src/kits
-	mv \$(DISTVNAME).tar.gz \$(HOME)/backpack
+	svnorcvs release \$(DISTVNAME).tar.gz
 
 maintainer-clean: distclean
 	-rm README Makefile
@@ -36,7 +35,7 @@ dist: distcheck README
 }
 
 # Check for AIX libraries and headers required to support this package
-# System calls: perfstat_cpu_total, 
+# System calls: perfstat_cpu_total,
 #              /usr/include/libperfstat.h
 #              /usr/lib/libperfstat.a
 
@@ -71,7 +70,7 @@ WriteMakefile(
 	      LIBS      => $libs,
 	      DEFINE    => $defs,
 	      'dist'    => {COMPRESS => 'gzip -9f',
-			    SUFFIX   => '.gz', 
+			    SUFFIX   => '.gz',
 			    DIST_DEFAULT => 'README all tardist',
 			},
 	      );

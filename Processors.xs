@@ -1,10 +1,9 @@
 #/* -*- Mode: C -*- */
-#/* $Id: Processors.xs 43 2007-02-01 20:03:09Z wsnyder $ */
 #/* Author: Wilson Snyder <wsnyder@wsnyder.org> */
 #/* IRIX & FreeBSD port by: Daniel Gustafson <daniel@hobbit.se> */
 #/*##################################################################### */
 #/* */
-#/* Copyright 1999-2007 by Wilson Snyder.  This program is free software; */
+#/* Copyright 1999-2008 by Wilson Snyder.  This program is free software; */
 #/* you can redistribute it and/or modify it under the terms of either the GNU */
 #/* General Public License or the Perl Artistic License. */
 #/*  */
@@ -103,35 +102,38 @@ typedef int CpuNumFromRef_t;
 #/**************************************************************/
 
 #ifdef __linux__
-char *proc_cpuinfo_field (const char *field)
+const char* proc_cpuinfo_field (const char *field)
     /* Return string from a field of /proc/cpuinfo, NULL if not found */
     /* Comparison is case insensitive */
+    /* If multiple matches, the last match is returned */
 {
-    FILE *fp;
+    FILE* fp;
     static char line[1000];
+    static char result[1000];
     int len = strlen(field);
-    char *result = NULL;
+    char* resultp = NULL;
     if (NULL!=(fp = fopen ("/proc/cpuinfo", "r"))) {
-	while (!feof(fp) && result==NULL) {
-	    fgets (line, 990, fp);
-	    if (0==strncasecmp (field, line, len)) {
+	while (!feof(fp)) {
+	    const char* ok = fgets (line, 990, fp);
+	    if (ok && 0==strncasecmp (field, line, len)) {
 		char *loc = strchr (line, ':');
 		if (loc) {
-		    result = loc+2;
+		    strncpy(result,loc+2, 990);
+		    resultp = result;
 		    loc = strchr (result, '\n');
 		    if (loc) *loc = '\0';
+		    /*printf("MATCH: %s: %s\n", field, resultp);*/
 		}
 	    }
 	}
 	fclose(fp);
     }
-    return (result);
+    return (resultp);
 }
 
-int proc_cpuinfo_clock (void)
-    /* Return clock frequency */
+int _proc_cpuinfo_clock_calc (void)
 {
-    char *value;
+    const char* value;
     value = proc_cpuinfo_field ("cpu MHz");
     if (value) return (atoi(value));
     value = proc_cpuinfo_field ("clock");
@@ -141,10 +143,17 @@ int proc_cpuinfo_clock (void)
     return (0);
 }
 
+int proc_cpuinfo_clock (void)
+    /* Return clock frequency */
+{
+    static int cache = 0;
+    if (!cache) cache = _proc_cpuinfo_clock_calc();
+    return cache;
+}
+
 #endif
 
-int proc_ncpus (void)
-    /* Return number of cpus */
+int _proc_nthreaders_calc (void)
 {
     int num_cpus = 0;
 
@@ -171,8 +180,7 @@ int proc_ncpus (void)
 # ifdef __linux__
     if (num_cpus < 1) {
 	/* SPARC Linux has a bug where SC_NPROCESSORS is set to 0. */
-	char *value;
-	value = proc_cpuinfo_field("ncpus active");
+	const char* value = proc_cpuinfo_field("ncpus active");
 	if (value) num_cpus = atoi(value);
     }
 # endif
@@ -186,6 +194,14 @@ int proc_ncpus (void)
     if (num_cpus < 1)
         num_cpus=1;      /* We're running this program, after all :-) */
     return (num_cpus);
+}
+
+int proc_nthreaders (void)
+    /* Return number of processor threads */
+{
+    static int cache = 0;
+    if (!cache) cache = _proc_nthreaders_calc();
+    return cache;
 }
 
 #ifdef IRIX
@@ -232,7 +248,7 @@ int logical_per_physical_cpu() {
     int logical_per = 1;
 
 #ifdef __linux__
-    char* flags = proc_cpuinfo_field ("flags");
+    const char* flags = proc_cpuinfo_field ("flags");
     /* flags: ... ht ... indicates hyperthreading enabled on a cpu */
     if (flags && strstr (flags, " ht ")) {
 	/* HACK: Current linux under hyperthreading always makes 2 logical CPUs per physical CPU */
@@ -254,6 +270,64 @@ int logical_per_physical_cpu() {
     return logical_per;
 }
 
+int proc_num_physical_ids() {
+#ifdef __linux__
+    {
+	const char* value = proc_cpuinfo_field ("physical id");
+	if (value) {
+	    int phys = atoi(value)+1;
+	    return phys;
+	}
+    }
+#endif
+    return 0;
+}
+int _proc_ncores_calc() {
+    /* Can't have more cores than threaders */
+    int num = proc_nthreaders();
+#ifdef __linux__
+    {
+	int phys = proc_num_physical_ids();
+	const char* cvalue = proc_cpuinfo_field ("cpu cores");
+	if (phys && cvalue) {
+	    int cores_per_phys = atoi(cvalue);
+	    int cores = phys * cores_per_phys;
+	    if (cores && (cores <= num)) return cores;
+	}
+    }
+#endif
+    {
+	/* If hyperthreading, the threader count is too high */
+	if (num > 1) {
+	    num /= logical_per_physical_cpu();
+	}
+	return num;
+    }
+}
+
+int proc_ncores() {
+    /* Return number of processor cores */
+    static int cache = 0;
+    if (!cache) cache = _proc_ncores_calc();
+    return cache;
+}
+
+int _proc_nsockets_calc() {
+    int num = proc_ncores();
+    /* default to core count, trim downwards if we can */
+    int phys = proc_num_physical_ids();
+    if (phys && ((phys <= num))) num = phys;
+    return num;
+}
+
+int proc_nsockets() {
+    /* Return number of processor sockets */
+    static int cache = 0;
+    if (!cache) cache = _proc_nsockets_calc();
+    return cache;
+}
+
+
 MODULE = Unix::Processors  PACKAGE = Unix::Processors
 
 #/**********************************************************************/
@@ -268,7 +342,7 @@ SV *self;
 CODE:
 {
     if (self) {}  /* Prevent unused warning */
-    RETVAL = proc_ncpus();
+    RETVAL = proc_nthreaders();
 }
 OUTPUT: RETVAL
 
@@ -281,12 +355,22 @@ max_physical(self)
 SV *self;
 CODE:
 {
-    int cpus = proc_ncpus();
     if (self) {}  /* Prevent unused warning */
-    if (cpus > 1) {
-	cpus /= logical_per_physical_cpu();
-    }
-    RETVAL = cpus;
+    RETVAL = proc_ncores();
+}
+OUTPUT: RETVAL
+
+#/**********************************************************************/
+#/* class->max_socket() */
+#/* Self is a argument, but we don't need it */
+
+long
+max_socket(self)
+SV *self;
+CODE:
+{
+    if (self) {}  /* Prevent unused warning */
+    RETVAL = proc_nsockets();
 }
 OUTPUT: RETVAL
 
@@ -334,7 +418,7 @@ CODE:
     }
 #endif
 #ifdef IRIX
-    int num_cpus = proc_ncpus();
+    int num_cpus = proc_nthreaders();
     if ((num_cpus > 0) && (num_cpus < 3)) {
 	inventory_t *sys_invent;
 	if (setinvent() != -1) {
@@ -350,7 +434,7 @@ CODE:
     else {
 	invent_cpuinfo_t cpu_info;
 	int i;
-	for (i = 0; i < proc_ncpus(); i++) {
+	for (i = 0; i < proc_nthreaders(); i++) {
 	    cpu_info = irix_get_cpuinf(i);
 	    if (cpu_info.ic_cpuid == i)
 		if (cpu_info.ic_cpu_info.cpufq > clock)
@@ -361,8 +445,8 @@ CODE:
 #if (defined(__FreeBSD__) && (__FreeBSD_version >= 503105))
     int value = 0;
     int len = sizeof(value);
-    /* 
-     * Even if the frequency is modified using cpu_freq(3), all cpus 
+    /*
+     * Even if the frequency is modified using cpu_freq(3), all cpus
      * have the same value why we can request CPU 0 for max_clock.
      */
     if (sysctlbyname("dev.cpu.0.freq", &value, &len, NULL, 0) == 0) {
@@ -417,7 +501,7 @@ CODE:
 {
     int value = 0;
 #ifdef AIX
-    int num_cpus = proc_ncpus();
+    int num_cpus = proc_nthreaders();
     if (cpu < num_cpus) {
 # if defined(HAS_PERFSTAT)
       perfstat_cpu_total_t data;
@@ -432,7 +516,7 @@ CODE:
     }
 #endif
 #ifdef HPUX
-    int num_cpus = proc_ncpus();
+    int num_cpus = proc_nthreaders();
     if (cpu < num_cpus) {
       /* all processors have the same clock on HP - just report the first one */
       struct pst_processor psp;
@@ -448,7 +532,7 @@ CODE:
     }
 #endif
 #ifdef IRIX
-    int num_cpus = proc_ncpus();
+    int num_cpus = proc_nthreaders();
     if ((num_cpus > 0) && (num_cpus < 3)) {
 	inventory_t *sys_invent;
 	if (setinvent() != -1) {
@@ -572,10 +656,10 @@ CpuNumFromRef_t cpu
 PROTOTYPE: $
 CODE:
 {
-    char *value = NULL;
+    const char* value = NULL;
 #ifdef AIX
 # if defined(HAS_PERFSTAT)
-    int num_cpus = proc_ncpus();
+    int num_cpus = proc_nthreaders();
     if (cpu < num_cpus) {
       perfstat_cpu_total_t data;
       if (perfstat_cpu_total (0, &data, sizeof(data), 1)) {
@@ -585,7 +669,7 @@ CODE:
 # endif
 #endif
 #ifdef HPUX
-    int num_cpus = proc_ncpus();
+    int num_cpus = proc_nthreaders();
     if (cpu < num_cpus) {
 	switch(sysconf(_SC_CPU_VERSION)) {
 	case CPU_PA_RISC1_0:
@@ -610,7 +694,7 @@ CODE:
     }
 #endif
 #ifdef __linux__
-    int ncpu = proc_ncpus();
+    int ncpu = proc_nthreaders();
     if (cpu < ncpu) {
 	value = proc_cpuinfo_field ("model name");
 	if (!value) value = proc_cpuinfo_field ("machine");
@@ -618,16 +702,16 @@ CODE:
     }
 #endif
 #if defined(MIPS) && !defined(__linux__)
-    if (cpu < proc_ncpus()) {
+    if (cpu < proc_nthreaders()) {
 	if ((value = (char *)malloc(64)) != NULL) {
 	    sysinfo(SI_MACHINE, value, 64);
 	}
     }
 #endif
 #ifdef IRIX
-    if (cpu < proc_ncpus()) {
+    if (cpu < proc_nthreaders()) {
 	int cpu_data = 0;
-	int num_cpus = proc_ncpus();
+	int num_cpus = proc_nthreaders();
 	if ((num_cpus > 0) && (num_cpus < 3)) {
 	    inventory_t *sys_invent;
 	    if (setinvent() != -1) {
@@ -692,7 +776,7 @@ CODE:
     }
 #endif
 #ifdef __FreeBSD__
-    if (cpu < proc_ncpus()) {
+    if (cpu < proc_nthreaders()) {
 	if ((value = (char *)malloc(64)) != NULL) {
 	    int len = 64;
 	    sysctlbyname("hw.machine_arch", value, &len, NULL, 0);

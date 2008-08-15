@@ -1,0 +1,13 @@
+^CVS/
+^.git/
+/CVS/
+pm_to_blib$
+,v$
+\.(bak|new|old)$
+\bMakefile$
+\.o$
+\.c$
+\.bs$
+\.tar\.
+\bblib\b
+\.svn/

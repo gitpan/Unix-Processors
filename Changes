@@ -2,87 +2,92 @@ Revision history for Perl extension Unix::Processors
 
 The contributors that suggested a given feature are shown in [].
 
-* Unix::Processors 2.034 2/1/2007
+* Unix::Processors 2.040 2008/8/14
+
+***	Added max_socket call, for number of CPU sockets.
+
+***	Fix max_physical wrong result on AMD Phenom quad-core Linux.
+
+* Unix::Processors 2.034 2007/1/2
 
 ***	Fix Linux on MIPS support.
 
-* Unix::Processors 2.033 11/07/2005
+* Unix::Processors 2.033 2005/07/11
 
 ***	Fix Mac OS X Panther and Tiger support.
 
-* Unix::Processors 2.032 07/01/2005
+* Unix::Processors 2.032 2005/01/07
 
 ***	Added support for Itanium irelinux.  [by Tim Berke]
 
-* Unix::Processors 2.031 05/23/2005
+* Unix::Processors 2.031 2005/23/05
 
 ****	Fix C++ Comments [Merijn Brand]
 
-* Unix::Processors 2.030 04/01/2005 
+* Unix::Processors 2.030 2005/01/04
 
 **	NEWS is now renamed Changes, to support CPAN indexing. [Offer Kaye]
 
 ***	Fix max_clock and clock for BSD 5.4 and newer.  [by Daniel Gustafson]
 
-* Unix::Processors 2.022 09/13/2004
+* Unix::Processors 2.022 2004/13/09
 
 ****	Documentation updates.
 
-* Unix::Processors 2.021 04/05/2004
+* Unix::Processors 2.021 2004/05/04
 
 ***	Hyperthreading detection added for FreeBSD [by Daniel Gustafson]
 
-* Unix::Processors 2.020 03/04/2004
+* Unix::Processors 2.020 2004/04/03
 
 **	Added max_physical for detecting number of CPUs ignoring
 	hyperthreading.
 
-* Unix::Processors 2.015 01/27/2004
+* Unix::Processors 2.015 2004/27/01
 
 ****	Documentation fixes.
 
-* Unix::Processors 2.014 05/12/2003
+* Unix::Processors 2.014 2003/12/05
 
 ***	Irix/FreeBSD port fixes. [by Daniel Gustafson]
 
-* Unix::Processors 2.013 05/05/2003
+* Unix::Processors 2.013 2003/05/05
 
 ***	Add support for SGI Irix and some FreeBSD. [by Daniel Gustafson]
 
-* Unix::Processors 2.011 01/02/2003
+* Unix::Processors 2.011 2003/02/01
 
 ***	Fix type and frequency for AIX and HPUX. [by Reid Madsen]
 
-* Unix::Processors 2.010 12/30/2002
+* Unix::Processors 2.010 2002/30/12
 
 **	Added support for AIX, HPUX, MIPS, Alpha. [by Reid Madsen]
 
 ****	Major version bump only because '1.10' < '1.9'
 
-* Unix::Processors 1.9 8/30/2002
+* Unix::Processors 1.9 2002/30/8
 
 ****	README updates
 
-* Unix::Processors 1.8 2/13/2001
+* Unix::Processors 1.8 2001/13/2
 
 ****	Makefile.PL updates for testing
 
-* Unix::Processors 1.7 1/21/2000
+* Unix::Processors 1.7 2000/21/1
 
 ****	VERSION into Processors.pm, AUTHOR into Makefile.PL
 
-* Unix::Processors 1.6 1/17/2000
+* Unix::Processors 1.6 2000/17/1
 
 **	First CPAN Release
 
 ----------------------------------------------------------------------
-$Id: Changes 43 2007-02-01 20:03:09Z wsnyder $
 DESCRIPTION: Documentation on change history for this package
 ----------------------------------------------------------------------
 
 This uses outline mode in Emacs.  See C-h m [M-x describe-mode].
 
-Copyright 1999-2007 by Wilson Snyder.  This program is free software;
+Copyright 1999-2008 by Wilson Snyder.  This program is free software;
 you can redistribute it and/or modify it under the terms of either the GNU
 General Public License or the Perl Artistic License.
 

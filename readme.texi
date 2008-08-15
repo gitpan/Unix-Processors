@@ -4,7 +4,6 @@
 @settitle Perl Unix::Processors Installation
 @c %**end of header
 
-@c $Revision: 43 $$Date: 2007-02-01 15:03:09 -0500 (Thu, 01 Feb 2007) $$Author: wsnyder $
 @c DESCRIPTION: TexInfo: DOCUMENT source run through texinfo to produce README file
 @c Use 'make README' to produce the output file
 @c Before release, run C-u C-c C-u C-a (texinfo-all-menus-update)
@@ -15,17 +14,17 @@
 This is the Unix::Processors Perl Package.
 
 @menu
-* Copyright::                   
-* Description::                 
-* Obtaining Distribution::      
-* Supported Systems::           
-* Installation::                
+* Copyright::
+* Description::
+* Obtaining Distribution::
+* Supported Systems::
+* Installation::
 @end menu
 
 @node Copyright, Description, Top, Top
 @section Copyright
 
-This package is Copyright 1999-2007 by Wilson Snyder @email{wsnyder@@wsnyder.org}.
+This package is Copyright 1999-2008 by Wilson Snyder @email{wsnyder@@wsnyder.org}.
 
 You may distribute under the terms of either the GNU General Public License
 or the Perl Artistic License, as specified in the Perl README file.
@@ -45,7 +44,7 @@ This package provides access to per-processor information from Perl.
       print "Hyperthreading between ",$procs->max_physical," physical CPUs.\n";
   @}
   (my $FORMAT =   "%2s  %-8s     %4s    \n") =~ s/\s\s+/ /g;
-  printf($FORMAT, "#", "STATE", "CLOCK",  "TYPE", ); 
+  printf($FORMAT, "#", "STATE", "CLOCK",  "TYPE", );
   foreach my $proc (@@@{$procs->processors@}) @{
       printf ($FORMAT, $proc->id, $proc->state, $proc->clock, $proc->type);
   @}
@@ -56,7 +55,7 @@ See @samp{man Unix::Processors} after installation.
 @node Obtaining Distribution, Supported Systems, Description, Top
 @section Obtaining Distribution
 
-The latest version is available at 
+The latest version is available at
 @uref{http://www.perl.org/CPAN/}
 
 Download the latest package from that site, and decompress.

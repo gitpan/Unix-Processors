@@ -1,17 +1,5 @@
-# Unix::Processor - Verilog PLI
-# $Id: Info.pm 43 2007-02-01 20:03:09Z wsnyder $
-# Author: Wilson Snyder <wsnyder@wsnyder.org>
-######################################################################
-#
-# Copyright 1999-2007 by Wilson Snyder.  This program is free software;
-# you can redistribute it and/or modify it under the terms of either the GNU
-# General Public License or the Perl Artistic License.
-# 
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-# 
+# Unix::Processors::Info
+# See copyright, etc in below POD section.
 ######################################################################
 
 =head1 NAME
@@ -41,7 +29,7 @@ Return the cpu number of this processor.
 =item clock
 
 Return the clock frequency in MHz.
-  
+
 =item state
 
 Return the cpu state as "online", "offline", or "poweroff".
@@ -54,9 +42,9 @@ Return the cpu type.
 
 =head1 DISTRIBUTION
 
-The latest version is available from CPAN and from L<http://www.veripool.com/>.
+The latest version is available from CPAN and from L<http://www.veripool.org/>.
 
-Copyright 1999-2007 by Wilson Snyder.  This package is free software; you
+Copyright 1999-2008 by Wilson Snyder.  This package is free software; you
 can redistribute it and/or modify it under the terms of either the GNU
 Lesser General Public License or the Perl Artistic License.
 
@@ -81,7 +69,7 @@ use vars qw($VERSION);
 ######################################################################
 #### Configuration Section
 
-$VERSION = '2.034';
+$VERSION = '2.040';
 
 ######################################################################
 #### Code

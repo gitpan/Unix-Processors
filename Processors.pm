@@ -1,17 +1,5 @@
-# Unix::Processors - Verilog PLI
-# $Id: Processors.pm 43 2007-02-01 20:03:09Z wsnyder $
-# Author: Wilson Snyder <wsnyder@wsnyder.org>
-######################################################################
-#
-# Copyright 1999-2007 by Wilson Snyder.  This program is free software;
-# you can redistribute it and/or modify it under the terms of either the GNU
-# General Public License or the Perl Artistic License.
-# 
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-# 
+# Unix::Processors
+# See copyright, etc in below POD section.
 ######################################################################
 
 =head1 NAME
@@ -28,7 +16,7 @@ Unix::Processors - Interface to processor (CPU) information
       print "Hyperthreading between ",$procs->max_physical," physical CPUs.\n";
   }
   (my $FORMAT =   "%2s  %-8s     %4s    \n") =~ s/\s\s+/ /g;
-  printf($FORMAT, "#", "STATE", "CLOCK",  "TYPE", ); 
+  printf($FORMAT, "#", "STATE", "CLOCK",  "TYPE", );
   foreach my $proc (@{$procs->processors}) {
       printf ($FORMAT, $proc->id, $proc->state, $proc->clock, $proc->type);
   }
@@ -43,18 +31,25 @@ the operating system in a OS independent manner.
 
 =item max_online
 
-Return number of processors currently online.  On hyperthreaded Linux
-systems, this indicates the maximum number of simultaneous threads that may
-execute; see max_physical for the real physical CPU count.
+Return number of threading processors currently online.  On hyperthreaded
+Linux systems, this indicates the maximum number of simultaneous threads
+that may execute; see max_physical for the real physical CPU count.
 
 =item max_physical
 
-Return number of physical processors currently online.
+Return number of physical processor cores currently online.  For example, a
+single chip quad-core processor returns four.
+
+=item max_socket
+
+Returns the number of populated CPU sockets, if known, else the same number
+as max_physical.  For example, a single chip quad-core processor returns
+one.
 
 =item max_clock
 
 Return the maximum clock speed across all online processors. Not all OSes support this call.
-  
+
 =item processors
 
 Return an array of processor references.  See the Unix::Processors::Info
@@ -64,9 +59,9 @@ manual page.  Not all OSes support this call.
 
 =head1 DISTRIBUTION
 
-The latest version is available from CPAN and from L<http://www.veripool.com/>.
+The latest version is available from CPAN and from L<http://www.veripool.org/>.
 
-Copyright 1999-2007 by Wilson Snyder.  This package is free software; you
+Copyright 1999-2008 by Wilson Snyder.  This package is free software; you
 can redistribute it and/or modify it under the terms of either the GNU
 Lesser General Public License or the Perl Artistic License.
 
@@ -83,7 +78,7 @@ L<Unix::Processors::Info>, L<Sys::Sysconf>
 package Unix::Processors;
 use Unix::Processors::Info;
 
-$VERSION = '2.034';
+$VERSION = '2.040';
 
 require DynaLoader;
 @ISA = qw(DynaLoader);
