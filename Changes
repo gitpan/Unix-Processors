@@ -2,13 +2,17 @@ Revision history for Perl extension Unix::Processors
 
 The contributors that suggested a given feature are shown in [].
 
-* Unix::Processors 2.040 2008/8/14
+* Unix::Processors 2.041 2009/05/08
+
+**	This package is now licensed under LGPL v3 and/or Artistic v2.0.
+
+* Unix::Processors 2.040 2008/08/14
 
 ***	Added max_socket call, for number of CPU sockets.
 
 ***	Fix max_physical wrong result on AMD Phenom quad-core Linux.
 
-* Unix::Processors 2.034 2007/1/2
+* Unix::Processors 2.034 2007/01/02
 
 ***	Fix Linux on MIPS support.
 
@@ -87,9 +91,9 @@ DESCRIPTION: Documentation on change history for this package
 
 This uses outline mode in Emacs.  See C-h m [M-x describe-mode].
 
-Copyright 1999-2008 by Wilson Snyder.  This program is free software;
+Copyright 1999-2009 by Wilson Snyder.  This program is free software;
 you can redistribute it and/or modify it under the terms of either the GNU
-General Public License or the Perl Artistic License.
+Lesser General Public License Version 3 or the Perl Artistic License Version 2.0.
 
 Local variables:
 mode: outline

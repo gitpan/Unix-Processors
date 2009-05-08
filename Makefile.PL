@@ -2,36 +2,36 @@
 #
 # Copyright 1998-2005 by Wilson Snyder.  This program is free software;
 # you can redistribute it and/or modify it under the terms of either the GNU
-# General Public License or the Perl Artistic License.
+# Lesser General Public License Version 3 or the Perl Artistic License Version 2.0.
 
 use ExtUtils::MakeMaker;
 use Carp;
 
 sub MY::postamble {
-"
+    q{
 README: readme.texi
-	-rm -f \$@
-	makeinfo \$< --output \$@ --no-headers --no-validate
+	-$(RM_RF) $@
+	makeinfo $< --output $@ --no-headers --no-validate
 
 ## Maintainer use:
 preexist:
-	svnorcvs nexists \$(DISTNAME)_\$(VERSION_SYM)
+	svnorcvs nexists $(DISTNAME)_$(VERSION_SYM)
 	test -s README
 
 tag:
-	svnorcvs tag  \$(DISTNAME)_\$(VERSION_SYM)
+	svnorcvs tag  $(DISTNAME)_$(VERSION_SYM)
 
 maintainer-diff:
-	svnorcvs diff \$(DISTNAME)_\$(VERSION_SYM)
+	svnorcvs diff $(DISTNAME)_$(VERSION_SYM)
 
 maintainer-dist: preexist dist tag
-	svnorcvs release \$(DISTVNAME).tar.gz
+	svnorcvs release $(DISTVNAME).tar.gz
 
 maintainer-clean: distclean
-	-rm README Makefile
+	-$(RM_RF) README Makefile
 
 dist: distcheck README
-";
+};
 }
 
 # Check for AIX libraries and headers required to support this package
