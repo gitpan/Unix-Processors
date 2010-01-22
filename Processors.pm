@@ -61,7 +61,7 @@ manual page.  Not all OSes support this call.
 
 The latest version is available from CPAN and from L<http://www.veripool.org/>.
 
-Copyright 1999-2009 by Wilson Snyder.  This package is free software; you
+Copyright 1999-2010 by Wilson Snyder.  This package is free software; you
 you can redistribute it and/or modify it under the terms of either the GNU
 Lesser General Public License Version 3 or the Perl Artistic License Version 2.0.
 
@@ -78,7 +78,7 @@ L<Unix::Processors::Info>, L<Sys::Sysconf>
 package Unix::Processors;
 use Unix::Processors::Info;
 
-$VERSION = '2.041';
+$VERSION = '2.042';
 
 require DynaLoader;
 @ISA = qw(DynaLoader);

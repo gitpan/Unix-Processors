@@ -3,7 +3,7 @@
 #/* IRIX & FreeBSD port by: Daniel Gustafson <daniel@hobbit.se> */
 #/*##################################################################### */
 #/* */
-#/* Copyright 1999-2009 by Wilson Snyder.  This program is free software; */
+#/* Copyright 1999-2010 by Wilson Snyder.  This program is free software; */
 #/* you can redistribute it and/or modify it under the terms of either the GNU */
 #/* Lesser General Public License Version 3 or the Perl Artistic License Version 2.0. */
 #/*  */
@@ -174,7 +174,7 @@ int _proc_nthreaders_calc (void)
 #endif
 
     /* Generic linux defaults */
-#if defined(SUNOS) || defined(AIX) || defined (__linux__)
+#if defined(SUNOS) || defined(AIX) || defined(__APPLE__) || defined (__linux__)
     if (num_cpus < 1)
 	num_cpus = sysconf(_SC_NPROCESSORS_ONLN);
 # ifdef __linux__
