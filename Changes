@@ -2,6 +2,12 @@ Revision history for Perl extension Unix::Processors
 
 The contributors that suggested a given feature are shown in [].
 
+* Unix::Processors 2.043 2014/09/11
+
+****	Fix Pod::Usage dependency, rt51024.  [Andreas Koenig]
+
+****    Fix manifest warning.
+
 * Unix::Processors 2.042 2010/01/22
 
 ****	Support Mac OSX, rt53894.  [Justin Case]
@@ -95,7 +101,7 @@ DESCRIPTION: Documentation on change history for this package
 
 This uses outline mode in Emacs.  See C-h m [M-x describe-mode].
 
-Copyright 1999-2010 by Wilson Snyder.  This program is free software;
+Copyright 1999-2014 by Wilson Snyder.  This program is free software;
 you can redistribute it and/or modify it under the terms of either the GNU
 Lesser General Public License Version 3 or the Perl Artistic License Version 2.0.
 

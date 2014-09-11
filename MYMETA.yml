@@ -1,0 +1,19 @@
+---
+abstract: 'Interface to processor (CPU) information'
+author:
+  - 'Wilson Snyder <wsnyder@wsnyder.org>'
+build_requires:
+  ExtUtils::MakeMaker: 0
+dynamic_config: 0
+generated_by: 'hand, CPAN::Meta::Converter version 2.112150'
+license: perl
+meta-spec:
+  url: http://module-build.sourceforge.net/META-spec-v1.4.html
+  version: 1.4
+name: Unix-Processors
+requires: {}
+resources:
+  homepage: http://www.veripool.org
+version: 2.043
+x_installdirs: site
+x_version_from: Processors.pm

@@ -5,6 +5,8 @@ Makefile.PL
 MANIFEST
 MANIFEST.SKIP
 META.yml
+MYMETA.yml
+MYMETA.json
 Processors.pm
 Processors.xs
 Processors/Info.pm

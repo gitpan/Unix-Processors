@@ -9,3 +9,4 @@ README
 *.old
 *.o
 test_dir
+MYMETA.*
